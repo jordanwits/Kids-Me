@@ -14,26 +14,30 @@ import { testimonials } from "@/lib/site";
 
 const accent: Record<
   string,
-  { dot: string; tape: string; soft: string }
+  { dot: string; tape: string; text: string; soft: string }
 > = {
   coral: {
     dot: "bg-coral",
     tape: "bg-coral",
+    text: "text-coral-deep",
     soft: "bg-coral-soft",
   },
   teal: {
     dot: "bg-teal",
     tape: "bg-teal",
+    text: "text-teal-deep",
     soft: "bg-teal-soft",
   },
   gold: {
     dot: "bg-gold",
     tape: "bg-gold",
+    text: "text-coral-deep",
     soft: "bg-gold-soft",
   },
   mauve: {
     dot: "bg-mauve",
     tape: "bg-mauve",
+    text: "text-slate-deep",
     soft: "bg-mauve-soft",
   },
 };
@@ -138,7 +142,16 @@ export default function Applause() {
 
         {/* keyed so each change replays the rise, which reads as a page turn */}
         <div key={i} className="anim-rise flex flex-1 flex-col">
-          <blockquote className="flex-1 text-[16.5px] leading-[1.8] text-ink text-pretty sm:text-[17px]">
+          <svg
+            viewBox="0 0 40 30"
+            aria-hidden
+            className={`h-8 w-10 ${a.text} opacity-45`}
+            fill="currentColor"
+          >
+            <path d="M0 30V17.4C0 7.9 5.2 1.6 15.3 0l1.9 5.2c-5.6 1.5-8.4 4.6-8.4 9.3h7.6V30H0Zm22.8 0V17.4C22.8 7.9 28 1.6 38.1 0L40 5.2c-5.6 1.5-8.4 4.6-8.4 9.3h7.6V30H22.8Z" />
+          </svg>
+
+          <blockquote className="mt-5 flex-1 text-[16.5px] leading-[1.8] text-ink text-pretty sm:text-[17px]">
             {active.quote}
           </blockquote>
 
