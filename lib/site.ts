@@ -96,6 +96,11 @@ export const nav: NavItem[] = [
     href: "/enrollment",
     children: [
       {
+        label: "Rates",
+        href: "/enrollment#rates",
+        blurb: "Daily rates and the registration fee",
+      },
+      {
         label: "Registration Form",
         href: "/enrollment#form",
         blurb: "Enroll online in minutes",
