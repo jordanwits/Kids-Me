@@ -178,33 +178,6 @@ export default function EnrollmentPage() {
                 </div>
               </div>
             </Reveal>
-
-            <Reveal delay={180}>
-              <div className="mx-auto mt-4 flex max-w-[820px] flex-col items-center gap-5 rounded-[24px] border border-cream/15 bg-cream/[0.07] px-7 py-6 text-center sm:flex-row sm:text-left">
-                <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gold text-ink">
-                  <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden>
-                    <circle cx="12" cy="12" r="8.6" stroke="currentColor" strokeWidth="1.8" />
-                    <path
-                      d="M12 11v5.4M12 7.8h.01"
-                      stroke="currentColor"
-                      strokeWidth="1.9"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </span>
-                <p className="flex-1 text-[15px] leading-[1.65] text-cream/80">
-                  Rates shown are per child, per day. Schedules are flexible and
-                  available year round. Call{" "}
-                  <a
-                    href={site.phone.href}
-                    className="font-medium text-gold underline decoration-gold/40 underline-offset-4 transition-colors hover:decoration-gold"
-                  >
-                    {site.phone.label}
-                  </a>{" "}
-                  and we&apos;ll walk you through what your week would look like.
-                </p>
-              </div>
-            </Reveal>
           </div>
 
           <Wave fill="#FDF7F0" className="relative -mb-px" />
