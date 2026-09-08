@@ -100,11 +100,6 @@ export const nav: NavItem[] = [
         href: "/enrollment#form",
         blurb: "Enroll online in minutes",
       },
-      {
-        label: "Request a Tour",
-        href: "/enrollment#tour",
-        blurb: "Drop in, no appointment needed",
-      },
     ],
   },
   { label: "Gallery", href: "/gallery" },
