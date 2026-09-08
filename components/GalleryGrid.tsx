@@ -138,15 +138,26 @@ export default function GalleryGrid() {
             className="flex max-h-full w-full flex-col items-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex max-h-[78vh] w-full items-center justify-center">
+            {/* Sized the same way as the home page carousel's viewer: drive the
+                WIDTH explicitly and let height follow, capping width by the
+                image's own ratio so a tall photo still fits the viewport.
+                Leaving width on `auto` lays the photo out at its intrinsic
+                size instead, which is what made the small sources (the two
+                320px portraits especially) open tiny. */}
+            <div className="flex w-full items-center justify-center">
               <Image
                 src={active.src}
                 alt={active.alt}
-                width={1100}
-                height={800}
+                width={active.w}
+                height={active.h}
                 sizes="(max-width: 768px) 94vw, 1100px"
                 priority
-                className="h-auto max-h-[78vh] w-auto max-w-[94vw] rounded-[18px] border-[6px] border-shell object-contain shadow-[0_40px_90px_-30px_rgba(0,0,0,.8)]"
+                style={{
+                  width: `min(94vw, 1100px, calc(84vh * ${(
+                    active.w / active.h
+                  ).toFixed(4)}))`,
+                }}
+                className="h-auto rounded-[18px] border-[6px] border-shell shadow-[0_40px_90px_-30px_rgba(0,0,0,.8)]"
               />
             </div>
 

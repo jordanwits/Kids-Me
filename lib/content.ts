@@ -479,14 +479,71 @@ export const galleryCategories = [
   },
 ] as const;
 
-export type GalleryPhoto = { src: string; alt: string; category: string };
+/**
+ * Intrinsic [width, height] of every source file, read from the JPEG headers.
+ *
+ * The lightbox scales photos UP to fill the viewport, so it has to know each
+ * image's real shape. These sources are small and inconsistent — 640x457,
+ * 640x427, one 640x360, and two portrait 320x480 — so a single assumed ratio
+ * would letterbox or distort. Without this, `width: auto` lays a photo out at
+ * its intrinsic size, which is why the portraits opened at 320px wide.
+ *
+ * TODO(client): regenerate when the new photography lands.
+ */
+const photoSize: Record<string, [number, number]> = {
+  "gallery-playground-redding-preschools-01.jpg": [640, 427],
+  "gallery-playground-redding-preschools-02.jpg": [640, 427],
+  "gallery-playground-redding-preschools-03.jpg": [320, 480],
+  "gallery-playground-redding-preschools-04.jpg": [320, 480],
+  "gallery-playground-redding-preschools-05.jpg": [640, 457],
+  "gallery-playground-redding-preschools-06.jpg": [640, 427],
+  "gallery-playground-redding-preschools-07.jpg": [640, 427],
+  "gallery-playground-redding-preschools-08.jpg": [640, 457],
+  "gallery-playground-redding-preschools-09.jpg": [640, 427],
+  "gallery-playground-redding-preschools-10.jpg": [640, 457],
+  "gallery-playground-redding-preschools-11.jpg": [640, 457],
+  "gallery-playground-redding-preschools-12.jpg": [640, 457],
+  "gallery-playground-redding-preschools-13.jpg": [640, 457],
+  "gallery-classroom-redding-preschools-01.jpg": [640, 457],
+  "gallery-classroom-redding-preschools-02.jpg": [640, 427],
+  "gallery-classroom-redding-preschools-03.jpg": [640, 427],
+  "gallery-classroom-redding-preschools-04.jpg": [640, 457],
+  "gallery-classroom-redding-preschools-05.jpg": [640, 457],
+  "gallery-classroom-redding-preschools-06.jpg": [640, 427],
+  "gallery-classroom-redding-preschools-07.jpg": [640, 457],
+  "gallery-playroom-redding-preschools-01.jpg": [640, 457],
+  "gallery-playroom-redding-preschools-02.jpg": [640, 457],
+  "gallery-playroom-redding-preschools-03.jpg": [640, 427],
+  "gallery-playroom-redding-preschools-04.jpg": [640, 457],
+  "gallery-playroom-redding-preschools-05.jpg": [640, 457],
+  "gallery-playroom-redding-preschools-06.jpg": [640, 427],
+  "gallery-playroom-redding-preschools-07.jpg": [640, 457],
+  "gallery-lunchroom-redding-preschools-01.jpg": [640, 457],
+  "gallery-lunchroom-redding-preschools-02.jpg": [640, 360],
+};
+
+export type GalleryPhoto = {
+  src: string;
+  alt: string;
+  category: string;
+  /** Intrinsic pixel width, for the lightbox's aspect-ratio maths. */
+  w: number;
+  /** Intrinsic pixel height. */
+  h: number;
+};
 
 export const galleryPhotos: GalleryPhoto[] = galleryCategories.flatMap((c) =>
-  Array.from({ length: c.count }, (_, i) => ({
-    src: `/images/${c.prefix}-${String(i + 1).padStart(2, "0")}.jpg`,
-    alt: `${c.label} at Kids & Me Preschool`,
-    category: c.slug,
-  })),
+  Array.from({ length: c.count }, (_, i) => {
+    const file = `${c.prefix}-${String(i + 1).padStart(2, "0")}.jpg`;
+    const [w, h] = photoSize[file] ?? [640, 457];
+    return {
+      src: `/images/${file}`,
+      alt: `${c.label} at Kids & Me Preschool`,
+      category: c.slug,
+      w,
+      h,
+    };
+  }),
 );
 
 /* ============================================================
