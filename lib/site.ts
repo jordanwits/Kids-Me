@@ -151,22 +151,23 @@ export const rates = [
     ],
     featured: false,
   },
-  {
-    name: "Registration",
-    price: "$100",
-    unit: "one time",
-    placeholder: false,
-    hours: "Per family, not per child",
-    accent: "mauve",
-    features: [
-      "Covers every child in your family",
-      "Supplies & materials for the year",
-      "Secures your child's spot",
-      "Never charged twice",
-    ],
-    featured: false,
-  },
 ] as const;
+
+/**
+ * Registration is a one-time fee, not a third plan.
+ *
+ * It used to sit in `rates` and render as a third card alongside Full Day and
+ * Half Day, which read as a third option you choose between rather than the
+ * fee everyone pays on top. Kept separate so it can only ever render as a fee
+ * line beneath the rate cards.
+ */
+export const registration = {
+  price: "$100",
+  unit: "one time",
+  summary: "Per family, not per child",
+  detail:
+    "Covers every child you enroll, plus supplies and materials for the year. Never charged twice.",
+} as const;
 
 /**
  * Verbatim from the current site's Applause page. `short` is the trimmed pull

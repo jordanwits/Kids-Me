@@ -1,12 +1,11 @@
 import Link from "next/link";
 import Reveal from "./Reveal";
-import { rates, site } from "@/lib/site";
+import { rates, registration, site } from "@/lib/site";
 import { ConfettiDots, Wave } from "./Decor";
 
 const accents: Record<string, { chip: string; price: string; check: string }> = {
   teal: { chip: "bg-teal", price: "text-teal-deep", check: "text-teal-deep" },
   gold: { chip: "bg-gold", price: "text-coral-deep", check: "text-coral-deep" },
-  mauve: { chip: "bg-mauve", price: "text-slate-deep", check: "text-slate-deep" },
 };
 
 export default function Tuition() {
@@ -34,7 +33,7 @@ export default function Tuition() {
             </p>
           </Reveal>
 
-          <div className="mt-14 grid items-start gap-6 md:grid-cols-3">
+          <div className="mx-auto mt-14 grid max-w-[820px] items-start gap-6 md:grid-cols-2">
             {rates.map((r, i) => {
               const a = accents[r.accent];
               return (
@@ -132,8 +131,12 @@ export default function Tuition() {
                 </svg>
               </span>
               <p className="flex-1 text-[15px] leading-[1.65] text-cream/80">
-                Rates shown are per child, per day. Schedules are flexible and
-                available year round. Call{" "}
+                Rates are per child, per day, with flexible year-round
+                scheduling. Registration is a one-time{" "}
+                <span className="font-medium text-cream">
+                  {registration.price} per family
+                </span>
+                , not per child. Call{" "}
                 <a
                   href={site.phone.href}
                   className="font-medium text-gold underline decoration-gold/40 underline-offset-4 transition-colors hover:decoration-gold"

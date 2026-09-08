@@ -3,7 +3,7 @@ import Image from "next/image";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import { ConfettiDots, PaperEdge, Wave } from "@/components/Decor";
-import { rates, site } from "@/lib/site";
+import { rates, registration, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Tuition & Enrollment | Kids & Me Preschool, Redding CA",
@@ -14,7 +14,6 @@ export const metadata: Metadata = {
 const accents: Record<string, { chip: string; price: string; check: string }> = {
   teal: { chip: "bg-teal", price: "text-teal-deep", check: "text-teal-deep" },
   gold: { chip: "bg-gold", price: "text-coral-deep", check: "text-coral-deep" },
-  mauve: { chip: "bg-mauve", price: "text-slate-deep", check: "text-slate-deep" },
 };
 
 const steps = [
@@ -55,7 +54,7 @@ export default function EnrollmentPage() {
           />
 
           <div className="mx-auto max-w-[1240px] px-5 pb-16 sm:pb-20">
-            <div className="grid items-start gap-6 md:grid-cols-3">
+            <div className="mx-auto grid max-w-[820px] items-start gap-6 md:grid-cols-2">
               {rates.map((r, i) => {
                 const a = accents[r.accent];
                 return (
@@ -147,8 +146,41 @@ export default function EnrollmentPage() {
               })}
             </div>
 
-            <Reveal delay={160}>
-              <div className="mx-auto mt-12 flex max-w-[900px] flex-col items-center gap-5 rounded-[28px] border border-cream/15 bg-cream/[0.07] px-7 py-6 text-center sm:flex-row sm:text-left">
+            {/* Registration is a fee, not a plan. A full-width line under the
+                cards — no button, no matching shape — so it reads as something
+                you also pay rather than a third thing you choose. */}
+            <Reveal delay={140}>
+              <div className="mx-auto mt-7 flex max-w-[820px] flex-col gap-5 rounded-[24px] border border-cream/15 bg-cream/[0.07] px-7 py-6 sm:flex-row sm:items-center sm:gap-7">
+                <div className="flex items-baseline gap-2.5 sm:flex-col sm:items-start sm:gap-1">
+                  <span className="font-display text-[34px] font-semibold leading-none text-gold">
+                    {registration.price}
+                  </span>
+                  <span className="text-[11.5px] font-semibold uppercase tracking-[0.14em] text-cream/55">
+                    {registration.unit}
+                  </span>
+                </div>
+
+                <span
+                  aria-hidden
+                  className="hidden h-14 w-px shrink-0 bg-cream/15 sm:block"
+                />
+
+                <div className="flex-1">
+                  <h3 className="font-display text-[17.5px] font-medium leading-tight text-cream">
+                    Registration fee
+                    <span className="ml-2 text-[14px] font-normal text-cream/60">
+                      {registration.summary}
+                    </span>
+                  </h3>
+                  <p className="mt-1.5 text-[14.5px] leading-[1.6] text-cream/70 text-pretty">
+                    {registration.detail}
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={180}>
+              <div className="mx-auto mt-4 flex max-w-[820px] flex-col items-center gap-5 rounded-[24px] border border-cream/15 bg-cream/[0.07] px-7 py-6 text-center sm:flex-row sm:text-left">
                 <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gold text-ink">
                   <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden>
                     <circle cx="12" cy="12" r="8.6" stroke="currentColor" strokeWidth="1.8" />
