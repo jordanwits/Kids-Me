@@ -283,7 +283,7 @@ export const dailyRhythm = [
   {
     part: "Early morning",
     time: "From 7:00 a.m.",
-    body: "Doors open. Quiet arrival, breakfast for the children who need it, and free choice at the tables while the rooms fill up.",
+    body: "Doors open. A quiet arrival and free choice at the tables while the rooms fill up.",
     accent: "gold",
   },
   {

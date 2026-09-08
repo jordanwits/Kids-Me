@@ -129,7 +129,9 @@ export const rates = [
     hours: "Up to 10.5 hours · 7:00 a.m. – 5:30 p.m.",
     accent: "teal",
     features: [
-      "Breakfast, hot lunch & afternoon snack",
+      // No breakfast: the current site publishes "Nutritious lunches and
+      // snacks" and mentions a morning meal nowhere.
+      "Hot lunch & afternoon snack",
       "Full preschool curriculum",
       "Outdoor play & nap time",
       "Any days of the week you need",
