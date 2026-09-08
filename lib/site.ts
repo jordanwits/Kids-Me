@@ -63,17 +63,13 @@ export const nav: NavItem[] = [
         blurb: "What sets the school apart",
       },
       {
-        label: "Our Teachers & Staff",
-        href: "/staff",
-        blurb: "Meet the people in the rooms",
-      },
-      {
         label: "What Parents Say",
         href: "/about#applause",
         blurb: "Reviews from Redding families",
       },
     ],
   },
+  { label: "Staff", href: "/staff" },
   {
     label: "Programs",
     href: "/programs",
