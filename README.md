@@ -59,15 +59,15 @@ If the client licences Rockford Sans for web, swap it into `app/layout.tsx` and 
 | Route | Holds | Replaces on the current site |
 | --- | --- | --- |
 | `/` | Teasers only, each linking on | Home |
-| `/about` | Our Story, Why Choose Us, activities, policies, full Applause | About Us + Why Choose Us + Applause |
+| `/about` | Our Story, Why Choose Us, activities, policies, Applause | About Us + Why Choose Us + Applause |
 | `/staff` | Teachers & staff, plus a careers block | *new, per scope 3.3* |
 | `/programs` | Three classrooms, full curriculum, monthly themes, a typical day, special events | Curriculum + Monthly Themes |
 | `/enrollment` | Published rates, the registration form, tours | *new — rates were never published* |
 | `/gallery` | Four categories with filters and a lightbox | Gallery |
 | `/contact` | Map, both numbers, hours, directions | Contact Us |
 
-Two merges keep the count at seven while absorbing all eight existing pages:
-Why Choose Us folds into `/about`, Monthly Themes into `/programs`. Both are
+Three merges keep the count at seven while absorbing all eight existing pages: Why
+Choose Us and Applause fold into `/about`, Monthly Themes into `/programs`. All are
 **deviations from the page list in section 3.3 and want client sign-off**, even though
 the total is unchanged. Permanent redirects for all six legacy URLs are in
 `next.config.mjs`.
@@ -153,5 +153,16 @@ client's request, re-skinned into this design's paper language: a hung board wit
 punched holes, four season columns, twelve month pages, day initials and askew paper
 pips. It collapses 4 → 2 → 1 columns.
 
-Copy is an edit pass over the existing site's text, per the scope of work. Testimonials
-are verbatim from the current Applause page, all four of them.
+Copy is an edit pass over the existing site's text, per the scope of work.
+
+Reviews appear twice, at two lengths. The home page carries three short pull quotes;
+`/about#applause` carries all four in full, **one at a time** — the parents are a
+selectable list and only the chosen review is on screen, because two of the four run
+past 800 characters and four simultaneous blocks was a wall of text. Both lengths come
+from the same `testimonials` array in `lib/site.ts` (`short` and `quote`), verbatim
+from the current Applause page.
+
+The `specialEvents` list in `lib/content.ts` is **not currently rendered**. Its band
+was removed from `/programs` because five of the six occasions already appear in the
+monthly-themes calendar on that same page. Only "Summer Water Play" has no theme
+equivalent, so the data is kept rather than deleted.

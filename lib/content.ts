@@ -350,6 +350,13 @@ export const activities = [
   "Nap time",
 ] as const;
 
+/**
+ * NOT CURRENTLY RENDERED. The events band was removed from /programs because
+ * five of these six (Halloween, Valentine's, Easter, Thanksgiving, Christmas /
+ * Santa) already appear in the monthly-themes calendar on the same page.
+ * Kept because it is the school's own copy from the current Why Choose Us
+ * page, and only "Summer Water Play" has no theme equivalent.
+ */
 export const specialEvents = [
   "Valentine's Day Party",
   "Halloween Carnival",

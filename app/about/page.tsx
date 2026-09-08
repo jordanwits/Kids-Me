@@ -3,9 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
+import Applause from "@/components/Applause";
 import { ConfettiDots, PaperEdge, featureIcons } from "@/components/Decor";
 import { activities, goodToKnow, offerings } from "@/lib/content";
-import { site, testimonials } from "@/lib/site";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About Us | Kids & Me Preschool, Redding CA",
@@ -51,13 +52,6 @@ const whyFeatures = [
     ring: "bg-sand-soft text-ink",
   },
 ];
-
-const tape: Record<string, string> = {
-  coral: "bg-coral",
-  teal: "bg-teal",
-  gold: "bg-gold",
-  mauve: "bg-mauve",
-};
 
 export default function AboutPage() {
   return (
@@ -349,76 +343,55 @@ export default function AboutPage() {
       {/* ================= Applause ================= */}
       <section id="applause" className="scroll-mt-24 bg-cream py-20 sm:py-24">
         <div className="mx-auto max-w-[1240px] px-5">
-          <Reveal className="mx-auto max-w-[620px] text-center">
-            <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
+          <Reveal className="mx-auto max-w-[640px] text-center">
+            <p className="font-hand text-[26px] leading-none text-coral-deep">
               Applause
             </p>
-            <h2 className="mt-3 font-display text-[clamp(2rem,4.2vw,3rem)] font-semibold leading-[1.05] tracking-[-0.015em] text-ink text-balance">
+            <h2 className="mt-2.5 font-display text-[clamp(2rem,4.2vw,3rem)] font-semibold leading-[1.05] tracking-[-0.015em] text-ink text-balance">
               What Redding parents say.
             </h2>
-            <p className="mx-auto mt-5 max-w-[48ch] text-[16.5px] leading-[1.7] text-ink-muted text-pretty">
+            <p className="mx-auto mt-5 max-w-[50ch] text-[16.5px] leading-[1.7] text-ink-muted text-pretty">
               In their own words, unedited, from families who have had children
-              in these rooms.
+              in these rooms. Pick a name to read theirs.
             </p>
           </Reveal>
 
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:gap-7">
-            {testimonials.map((t, i) => (
-              <Reveal key={t.author} delay={i * 90}>
-                <figure className="sticker relative flex h-full flex-col rounded-[30px] bg-shell p-7 sm:p-8">
-                  <span
-                    aria-hidden
-                    className={`absolute -top-3 left-10 h-6 w-24 -rotate-2 rounded-sm ${tape[t.accent]} opacity-85`}
-                  />
-                  <svg
-                    viewBox="0 0 40 30"
-                    aria-hidden
-                    className="h-7 w-9 text-sand"
-                    fill="currentColor"
-                  >
-                    <path d="M0 30V17.4C0 7.9 5.2 1.6 15.3 0l1.9 5.2c-5.6 1.5-8.4 4.6-8.4 9.3h7.6V30H0Zm22.8 0V17.4C22.8 7.9 28 1.6 38.1 0L40 5.2c-5.6 1.5-8.4 4.6-8.4 9.3h7.6V30H22.8Z" />
-                  </svg>
-                  <blockquote className="mt-4 flex-1 text-[15.5px] leading-[1.72] text-ink text-pretty">
-                    {t.quote}
-                  </blockquote>
-                  <figcaption className="mt-6 flex items-center gap-3 border-t border-sand/40 pt-5">
-                    <span
-                      aria-hidden
-                      className={`flex h-10 w-10 items-center justify-center rounded-full ${tape[t.accent]} font-display text-[16px] font-semibold text-ink`}
-                    >
-                      {t.author[0]}
-                    </span>
-                    <span className="font-display text-[16px] font-medium text-ink">
-                      {t.author}
-                    </span>
-                  </figcaption>
-                </figure>
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal delay={120}>
-            <div className="mx-auto mt-14 max-w-[640px] text-center">
-              <h3 className="font-display text-[clamp(1.6rem,3.2vw,2.2rem)] font-semibold leading-tight text-ink text-balance">
-                Come see whether they were right.
-              </h3>
-              <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Link
-                  href="/enrollment#form"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-coral px-8 py-4 font-display text-[17px] font-medium text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-coral-deep hover:text-white sm:w-auto"
-                >
-                  Start your registration
-                </Link>
-                <Link
-                  href="/staff"
-                  className="inline-flex w-full items-center justify-center rounded-full border-2 border-slate/40 px-8 py-4 font-display text-[17px] font-medium text-slate-deep transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-deep sm:w-auto"
-                >
-                  Meet the teachers
-                </Link>
-              </div>
-            </div>
+          <Reveal delay={120} className="mt-14">
+            <Applause />
           </Reveal>
         </div>
+      </section>
+
+      {/* ================= Closing ================= */}
+      <section className="bg-cream py-20 sm:py-24">
+        <Reveal>
+          <div className="mx-auto max-w-[700px] px-5 text-center">
+            <p className="font-hand text-[26px] leading-none text-coral-deep">
+              The door is open
+            </p>
+            <h2 className="mt-3 font-display text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold leading-tight text-ink text-balance">
+              Come and see a room in use.
+            </h2>
+            <p className="mx-auto mt-4 max-w-[50ch] text-[16.5px] leading-[1.7] text-ink-muted text-pretty">
+              Visit any weekday during operating hours. No appointment needed,
+              and you are welcome to look at every room and meet the staff.
+            </p>
+            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Link
+                href="/enrollment#form"
+                className="inline-flex w-full items-center justify-center rounded-full bg-coral px-8 py-4 font-display text-[17px] font-medium text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-coral-deep hover:text-white sm:w-auto"
+              >
+                Start your registration
+              </Link>
+              <Link
+                href="/staff"
+                className="inline-flex w-full items-center justify-center rounded-full border-2 border-slate/40 px-8 py-4 font-display text-[17px] font-medium text-slate-deep transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-deep sm:w-auto"
+              >
+                Meet the teachers
+              </Link>
+            </div>
+          </div>
+        </Reveal>
       </section>
     </>
   );

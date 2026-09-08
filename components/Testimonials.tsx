@@ -12,7 +12,8 @@ const tape: Record<string, string> = {
 
 const tilt = ["-rotate-[1.4deg]", "rotate-[0.8deg]", "-rotate-[0.6deg]"];
 
-/* Three pull quotes here; all four, in full, on /about#applause. */
+/* Three short pull quotes here; all four in full, one at a time, on
+   /about#applause. */
 const featured = testimonials.slice(0, 3);
 
 export default function Testimonials() {

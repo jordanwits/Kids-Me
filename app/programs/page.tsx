@@ -5,7 +5,7 @@ import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import ThemeCalendar from "@/components/ThemeCalendar";
 import { PaperEdge, Wave } from "@/components/Decor";
-import { classrooms, dailyRhythm, specialEvents } from "@/lib/content";
+import { classrooms, dailyRhythm } from "@/lib/content";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -302,46 +302,10 @@ export default function ProgramsPage() {
         <Wave fill="#FDF7F0" className="relative -mb-px" />
       </section>
 
-      {/* ================= Special events ================= */}
-      <section className="bg-cream pb-20 pt-16 sm:pb-24">
+      {/* ================= Closing ================= */}
+      <section className="bg-cream py-20 sm:py-24">
         <Reveal>
-          <div className="relative mx-auto max-w-[1440px] px-5">
-            <div className="relative overflow-hidden rounded-[40px]">
-              <Image
-                src="/images/why-choose-redding-preschools.jpg"
-                alt="The playground and grounds at Kids &amp; Me Preschool"
-                width={1200}
-                height={400}
-                sizes="(max-width: 1440px) 100vw, 1400px"
-                className="h-[320px] w-full object-cover sm:h-[380px]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/55 to-ink/15" />
-              <div className="absolute inset-0 flex items-center">
-                <div className="max-w-[640px] px-7 sm:px-12 lg:px-16">
-                  <p className="font-hand text-[24px] leading-none text-gold">
-                    Six times a year, we throw a party
-                  </p>
-                  <h2 className="mt-3 font-display text-[clamp(1.5rem,3vw,2.2rem)] font-semibold leading-tight text-cream text-balance">
-                    Because childhood should have some occasions in it.
-                  </h2>
-                  <ul className="mt-6 flex flex-wrap gap-2">
-                    {specialEvents.map((e) => (
-                      <li
-                        key={e}
-                        className="rounded-full border border-cream/30 bg-cream/10 px-3.5 py-1.5 text-[13px] font-medium text-cream backdrop-blur-sm"
-                      >
-                        {e}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Reveal>
-
-        <Reveal delay={100}>
-          <div className="mx-auto mt-14 max-w-[720px] px-5 text-center">
+          <div className="mx-auto max-w-[720px] px-5 text-center">
             <h2 className="font-display text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold leading-tight text-ink text-balance">
               Come and see a room in use.
             </h2>
