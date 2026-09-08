@@ -1,8 +1,8 @@
-# Kids & Me Preschool — landing page design
+# Kids & Me Preschool — reddingpreschools.com redesign
 
-Design concept for the reddingpreschools.com redesign. **This is the home page only** —
-no other routes are scaffolded. Nav links point at on-page anchors so the whole concept
-can be clicked through in one screen.
+Design build for the reddingpreschools.com redesign. Seven routes, matching the page
+count in section 3.3 of the scope of work (the six existing pages, plus the new Staff
+page) — but redistributed, so every nav item leads somewhere real.
 
 ## Run it
 
@@ -11,12 +11,13 @@ npm install
 npm run dev
 ```
 
-Deploys to Vercel with no configuration — Next.js App Router, fully static.
+Deploys to Vercel with no configuration — Next.js App Router, fully static. All seven
+routes prerender.
 
 ## Design direction
 
 Warm, editorial, hand-made. The logo is soft and dusty rather than primary-colour
-cartoon, so the page follows it: cream paper grounds, organic photo masks, torn-paper
+cartoon, so the pages follow it: cream paper grounds, organic photo masks, torn-paper
 section edges, crayon underlines, and the logo's own five-finger handprint used as a
 recurring motif. The intent is a boutique school that reads credible to parents while
 still feeling like somewhere a four-year-old would want to be.
@@ -38,7 +39,8 @@ added so body copy clears WCAG AA on cream. Tokens live in `app/globals.css`.
 | `ink` / `ink-muted` | `#333A45` / `#5E6979` | — | Text |
 
 Coral buttons use dark ink text (5.3:1), not white (2.2:1) — it passes contrast and
-looks better against the warm palette.
+looks better against the warm palette. The same rule governs the calendar's season
+strips: ink on every brand fill, never white.
 
 ### Type
 
@@ -52,51 +54,104 @@ type system stands in with the closest free relatives:
 If the client licences Rockford Sans for web, swap it into `app/layout.tsx` and point
 `--font-display` at it.
 
+## Sitemap
+
+| Route | Holds | Replaces on the current site |
+| --- | --- | --- |
+| `/` | Teasers only, each linking on | Home |
+| `/about` | Our Story, Why Choose Us, activities, policies, full Applause | About Us + Why Choose Us + Applause |
+| `/staff` | Teachers & staff, plus a careers block | *new, per scope 3.3* |
+| `/programs` | Three classrooms, full curriculum, monthly themes, a typical day, special events | Curriculum + Monthly Themes |
+| `/enrollment` | Published rates, the registration form, tours | *new — rates were never published* |
+| `/gallery` | Four categories with filters and a lightbox | Gallery |
+| `/contact` | Map, both numbers, hours, directions | Contact Us |
+
+Two merges keep the count at seven while absorbing all eight existing pages:
+Why Choose Us folds into `/about`, Monthly Themes into `/programs`. Both are
+**deviations from the page list in section 3.3 and want client sign-off**, even though
+the total is unchanged. Permanent redirects for all six legacy URLs are in
+`next.config.mjs`.
+
+### Navigation
+
+The rule that keeps the menu honest: **a dropdown child is never its parent's page
+top.** That is why there is no "Our Story" under About Us — it *is* About Us. Every
+child is a separate route or a real section further down the parent's page.
+
+The comp's nav was 18 links pointing at 6 destinations, three of which promised
+content that existed nowhere (Our Staff, Lunch & Snack Menu, Work Opportunities).
+Staff is now a real page; Work Opportunities became blocks on `/staff` and `/contact`;
+Lunch & Snack Menu is **deliberately absent** — the scope defers it to a page the
+director adds later through the admin portal, so putting it in the nav now would be a
+promise with nothing behind it.
+
 ## What the client asked for, and where it is
 
 | Ask | Where |
 | --- | --- |
 | New logo, colour scheme, updated photos | Throughout; logo cropped to `public/kids-me-logo.png` |
-| Registration form **on** the site, not just linked | `#enroll` — the live Procare form is embedded in an iframe and works |
-| That CTA prominent on the home page | Hero buttons, sticky nav button, `#enroll` section, footer card, closing band |
-| Rates published | `#tuition` — dedicated rates band |
+| Registration form **on** the site, not just linked | `/enrollment#form` — the live Procare form, embedded and working |
+| That CTA prominent on the home page | Hero buttons, sticky nav button, rate cards, closing band |
+| Rates published | `/enrollment#rates` |
 | Phone + email on every page | Utility strip above the nav, and again in the footer |
-| Menu dedicated to Request a Tour and Registration | "Tours & Enrollment" dropdown |
-| A menu that drops down to multiple pages | "About Us" → Our Story / Our Staff / Daily Schedule / Lunch & Snack Menu / Work Opportunities. "Programs" also drops down. |
+| Menu dedicated to Request a Tour and Registration | "Tuition & Enrollment" dropdown |
+| A menu that drops down to multiple pages | About Us and Programs both do |
+| New Staff page with photos and bios | `/staff` — built, awaiting content |
 
 ## Needs confirmation before launch
 
-These are marked `TODO(client)` in `lib/site.ts`:
+Marked `TODO(client)` in `lib/site.ts` and `lib/content.ts`:
 
-1. **Daily rates are placeholders.** `$52` full day and `$38` half day are invented
-   figures so the section can be designed. Only the `$100` per-family registration fee
-   is real (it is published on the current About Us page). Brett needs to supply the
-   actual daily rates.
-2. **Email address.** Set to `director@reddingpreschools.com` per the scope of work.
-   Business listings currently show `office.kidsandmeredding@gmail.com` — confirm which
-   is primary.
-3. **Photography** is pulled from the current site (2018 era) as a placeholder. The
-   scope has the client supplying new images; drop them into `public/images/` and update
-   the paths.
-4. **Address** — `3695 Churn Creek Road, Redding, CA 96002`, sourced from business
-   listings because the live Contact page returns a 403. Worth a sanity check.
+1. **Daily rates are placeholders.** `$52` full day and `$38` half day are invented.
+   The current About Us page has an "Our Prices & Rates" heading with *nothing under
+   it* — no daily rate has ever been published, so there is nothing to inherit. Only
+   the `$100` per-family registration fee is real. Placeholder rates render with a
+   visible "Rate to be confirmed" chip on `/enrollment`; remove it with the real
+   figures.
+2. **Email address.** The live Contact page publishes
+   `office.kidsandmeredding@gmail.com`; the scope stands up
+   `director@reddingpreschools.com`. Both are in `lib/site.ts`. Confirm which is
+   primary.
+3. **Staff photos and bios.** `/staff` is designed and renders a deliberate
+   awaiting-content state. "Teacher Pam" is the only name documented publicly (she is
+   named in Tricia's testimonial).
+4. **Photography** is pulled from the current site (2018 era) as a placeholder. The
+   scope has the client supplying new images; drop them into `public/images/`.
+5. **"Native Americans"** is the current site's own wording for a November theme.
+   Worth asking whether the school wants to keep or update the phrasing.
+
+Two claims from the original comp were **removed** rather than flagged, because no
+source supports them: "licensed capacity of 72", and the hero's "47 years" (1978 to
+2026 is 48, and a hardcoded count is how the current site ended up stuck on "over 33
+years"). The hero now reads "Since 1978".
 
 ## Structure
 
 ```
 app/
-  layout.tsx        fonts, metadata, LocalBusiness JSON-LD
-  page.tsx          section assembly
+  layout.tsx        fonts, metadata, JSON-LD, header + footer
+  page.tsx          home — teaser sections only
   globals.css       brand tokens, motifs, motion
-lib/site.ts         contact details, nav tree, rates, testimonials
+  about/  staff/  programs/  enrollment/  gallery/  contact/
+lib/
+  site.ts           contact details, nav tree, rates, testimonials
+  content.ts        curriculum, monthly themes, staff, daily rhythm, gallery
 components/
-  SiteHeader.tsx    utility strip, sticky nav w/ dropdowns, mobile drawer
-  Hero.tsx          Marquee.tsx  Welcome.tsx  Programs.tsx  WhyUs.tsx
-  Tuition.tsx       Enroll.tsx   Testimonials.tsx  Gallery.tsx  CtaBand.tsx
-  SiteFooter.tsx
+  SiteHeader.tsx    utility strip, sticky nav w/ dropdowns + active state, drawer
+  SiteFooter.tsx    contact block, sitemap, enrol card
+  PageHero.tsx      masthead for every inner route
+  ThemeCalendar.tsx monthly-themes wall calendar
+  GalleryGrid.tsx   filterable gallery + lightbox
+  Hero.tsx  Marquee.tsx  Welcome.tsx  Programs.tsx  WhyUs.tsx
+  Tuition.tsx  EnrollCta.tsx  Testimonials.tsx  Gallery.tsx  CtaBand.tsx
   Decor.tsx         handprint, confetti, paper edges, waves, feature icons
   Reveal.tsx        scroll-in animation wrapper
 ```
 
-Copy is an edit pass over the existing site's text, per the scope of work — the
-testimonials are verbatim from the current Applause page.
+The monthly-themes calendar is carried over from the Option 2 comp (`Kids-Me2`) at the
+client's request, re-skinned into this design's paper language: a hung board with
+punched holes, four season columns, twelve month pages, day initials and askew paper
+pips. It collapses 4 → 2 → 1 columns.
+
+Copy is an edit pass over the existing site's text, per the scope of work. Testimonials
+are verbatim from the current Applause page, all four of them.
