@@ -320,20 +320,27 @@ export default function AboutPage() {
               Good to know before you call.
             </h3>
           </Reveal>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            {goodToKnow.map((item, i) => (
-              <Reveal key={item.q} delay={i * 80}>
-                <div className="h-full rounded-[26px] border border-sand/40 bg-shell p-6">
-                  <p className="font-display text-[16.5px] font-medium leading-snug text-ink">
+          {/* Question left, answer right, hairlines between — same spec-sheet
+              language as the curriculum on /programs, rather than a 2x2 grid
+              of identical boxes. One Reveal around the whole list keeps the
+              dl > div > dt/dd nesting valid. */}
+          <Reveal>
+            <dl className="mx-auto mt-9 max-w-[940px] divide-y divide-sand/45 border-y border-sand/45">
+              {goodToKnow.map((item) => (
+                <div
+                  key={item.q}
+                  className="grid gap-x-10 gap-y-2 py-6 sm:grid-cols-[minmax(11rem,.9fr)_1.5fr] sm:py-7"
+                >
+                  <dt className="font-display text-[16px] font-semibold leading-[1.35] tracking-[-0.01em] text-ink">
                     {item.q}
-                  </p>
-                  <p className="mt-2.5 text-[15px] leading-[1.65] text-ink-muted text-pretty">
+                  </dt>
+                  <dd className="text-[15.5px] leading-[1.65] text-ink-muted text-pretty">
                     {item.a}
-                  </p>
+                  </dd>
                 </div>
-              </Reveal>
-            ))}
-          </div>
+              ))}
+            </dl>
+          </Reveal>
         </div>
 
         <PaperEdge fill="#FDF7F0" className="relative -mb-px mt-20" />

@@ -152,46 +152,40 @@ export default function ProgramsPage() {
                       </div>
                     </div>
 
-                    {/* ---- curriculum groups ---- */}
+                    {/* ---- curriculum, as a spec sheet rather than cards ----
+                        Label left, items right, hairlines between. Reads as one
+                        syllabus for the room instead of five floating boxes. */}
                     <div className={flip ? "lg:order-1" : ""}>
-                      <div className="grid gap-5 sm:grid-cols-2">
+                      <dl className="divide-y divide-sand/45 border-y border-sand/45">
                         {room.curriculum.map((group) => (
                           <div
                             key={group.heading}
-                            className="rounded-[26px] border border-sand/35 bg-shell p-6"
+                            className="grid gap-x-10 gap-y-2.5 py-6 sm:grid-cols-[minmax(8.5rem,.85fr)_1.6fr] sm:py-7"
                           >
-                            <h4 className="font-display text-[17px] font-semibold leading-tight text-ink">
-                              {group.heading}
-                            </h4>
-                            <ul className="mt-4 space-y-2.5">
-                              {group.items.map((item) => (
-                                <li
-                                  key={item}
-                                  className="flex items-start gap-2.5"
-                                >
-                                  <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    aria-hidden
-                                    className={`mt-[4px] h-3.5 w-3.5 shrink-0 ${a.text}`}
+                            <dt className="flex items-start gap-2.5">
+                              <span
+                                aria-hidden
+                                className={`mt-[7px] h-2 w-2 shrink-0 -rotate-[8deg] rounded-[2px] ${a.rule}`}
+                              />
+                              <span className="font-display text-[15.5px] font-semibold leading-[1.3] tracking-[-0.01em] text-ink">
+                                {group.heading}
+                              </span>
+                            </dt>
+                            <dd>
+                              <ul className="space-y-[7px]">
+                                {group.items.map((item) => (
+                                  <li
+                                    key={item}
+                                    className="text-[15.5px] leading-[1.55] text-ink-muted"
                                   >
-                                    <path
-                                      d="m4 12.6 5.2 5.2L20 6.6"
-                                      stroke="currentColor"
-                                      strokeWidth="2.8"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                  </svg>
-                                  <span className="text-[14.5px] leading-snug text-ink-muted">
                                     {item}
-                                  </span>
-                                </li>
-                              ))}
-                            </ul>
+                                  </li>
+                                ))}
+                              </ul>
+                            </dd>
                           </div>
                         ))}
-                      </div>
+                      </dl>
                     </div>
                   </article>
                 </Reveal>
@@ -246,26 +240,53 @@ export default function ProgramsPage() {
               </p>
             </Reveal>
 
-            <ol className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {dailyRhythm.map((step, i) => (
-                <Reveal key={step.part} delay={i * 70}>
-                  <li className="flex h-full flex-col rounded-[26px] border border-cream/12 bg-cream/[0.06] p-6">
-                    <span
-                      aria-hidden
-                      className={`h-1.5 w-10 rounded-full ${accent[step.accent].rule}`}
-                    />
-                    <p className="mt-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-cream/55">
-                      {step.time}
-                    </p>
-                    <h3 className="mt-1.5 font-display text-[19px] font-medium leading-tight text-cream">
-                      {step.part}
-                    </h3>
-                    <p className="mt-2.5 text-[14.5px] leading-[1.6] text-cream/70 text-pretty">
-                      {step.body}
-                    </p>
-                  </li>
-                </Reveal>
-              ))}
+            {/* A day is a sequence, so it reads as one continuous timeline
+                rather than eight identical tiles. */}
+            <ol className="mx-auto mt-14 max-w-[720px]">
+              {dailyRhythm.map((step, i) => {
+                const last = i === dailyRhythm.length - 1;
+                return (
+                  <Reveal key={step.part} delay={i * 60}>
+                    <li
+                      className={`grid grid-cols-[auto_1fr] gap-x-5 sm:grid-cols-[6.5rem_auto_1fr] sm:gap-x-7 ${
+                        last ? "" : "pb-9"
+                      }`}
+                    >
+                      <p className="hidden pt-[1px] text-right text-[12px] font-semibold uppercase tracking-[0.14em] text-cream/50 sm:block">
+                        {step.time}
+                      </p>
+
+                      {/* marker + connector */}
+                      <div className="relative flex justify-center">
+                        <span
+                          aria-hidden
+                          className={`z-10 mt-[3px] h-3.5 w-3.5 shrink-0 rounded-full ${
+                            accent[step.accent].rule
+                          } ring-4 ring-slate-deep`}
+                        />
+                        {!last && (
+                          <span
+                            aria-hidden
+                            className="absolute -bottom-9 left-1/2 top-5 w-px -translate-x-1/2 bg-cream/20"
+                          />
+                        )}
+                      </div>
+
+                      <div>
+                        <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-cream/50 sm:hidden">
+                          {step.time}
+                        </p>
+                        <h3 className="font-display text-[19px] font-medium leading-tight text-cream">
+                          {step.part}
+                        </h3>
+                        <p className="mt-2 max-w-[52ch] text-[15px] leading-[1.65] text-cream/70 text-pretty">
+                          {step.body}
+                        </p>
+                      </div>
+                    </li>
+                  </Reveal>
+                );
+              })}
             </ol>
 
             <Reveal delay={140}>
