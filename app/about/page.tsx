@@ -175,7 +175,7 @@ export default function AboutPage() {
       </section>
 
       {/* ================= Why choose us ================= */}
-      <section id="why" className="relative scroll-mt-24 overflow-hidden bg-cream-deep py-20 sm:py-24">
+      <section id="why" className="relative scroll-mt-24 overflow-hidden bg-cream-deep pt-20 sm:pt-24">
         <Image
           src="/HandGraphic.png"
           alt=""

@@ -75,7 +75,7 @@ export default function ProgramsPage() {
       </PageHero>
 
       {/* ================= Classrooms & curriculum ================= */}
-      <section id="curriculum" className="scroll-mt-24 bg-cream-deep py-20 sm:py-24">
+      <section id="curriculum" className="scroll-mt-24 bg-cream-deep pt-20 sm:pt-24">
         <div className="mx-auto max-w-[1240px] px-5">
           <Reveal className="mx-auto max-w-[640px] text-center">
             <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
@@ -225,8 +225,8 @@ export default function ProgramsPage() {
       <section id="day" className="relative scroll-mt-24 bg-cream">
         <Wave fill="#4A5567" className="relative -mb-px" />
 
-        <div className="bg-slate-deep py-16 sm:py-20">
-          <div className="mx-auto max-w-[1240px] px-5">
+        <div className="bg-slate-deep pt-16 sm:pt-20">
+          <div className="mx-auto max-w-[1240px] px-5 pb-16 sm:pb-20">
             <Reveal className="mx-auto max-w-[660px] text-center">
               <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-cream/60">
                 A day at Kids &amp; Me
@@ -297,9 +297,11 @@ export default function ProgramsPage() {
               </p>
             </Reveal>
           </div>
-        </div>
 
-        <Wave fill="#FDF7F0" className="relative -mb-px" />
+          {/* Inside the slate band, not after it: the wave draws a cream shape
+              and only reads as a transition against the dark ground. */}
+          <Wave fill="#FDF7F0" className="relative -mb-px" />
+        </div>
       </section>
 
       {/* ================= Closing ================= */}

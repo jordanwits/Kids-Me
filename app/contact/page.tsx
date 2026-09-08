@@ -23,7 +23,7 @@ export default function ContactPage() {
         edge="#F7EDE2"
       />
 
-      <section className="bg-cream-deep py-16 sm:py-20">
+      <section className="bg-cream-deep pt-16 sm:pt-20">
         <div className="mx-auto max-w-[1240px] px-5">
           <div className="grid gap-8 lg:grid-cols-[1fr_1.15fr] lg:gap-10">
             {/* ---------- details ---------- */}

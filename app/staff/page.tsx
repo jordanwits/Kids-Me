@@ -31,7 +31,7 @@ export default function StaffPage() {
         edge="#F7EDE2"
       />
 
-      <section className="bg-cream-deep py-20 sm:py-24">
+      <section className="bg-cream-deep pt-20 sm:pt-24">
         <div className="mx-auto max-w-[1240px] px-5">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
             {staff.map((person, i) => {
