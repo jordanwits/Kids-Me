@@ -40,15 +40,7 @@ export default function Testimonials() {
                   aria-hidden
                   className={`absolute -top-3 left-1/2 h-6 w-24 -translate-x-1/2 -rotate-2 rounded-sm ${tape[t.accent]} opacity-85`}
                 />
-                <svg
-                  viewBox="0 0 40 30"
-                  aria-hidden
-                  className="h-7 w-9 text-sand"
-                  fill="currentColor"
-                >
-                  <path d="M0 30V17.4C0 7.9 5.2 1.6 15.3 0l1.9 5.2c-5.6 1.5-8.4 4.6-8.4 9.3h7.6V30H0Zm22.8 0V17.4C22.8 7.9 28 1.6 38.1 0L40 5.2c-5.6 1.5-8.4 4.6-8.4 9.3h7.6V30H22.8Z" />
-                </svg>
-                <blockquote className="mt-4 text-[15.5px] leading-[1.72] text-ink text-pretty">
+                <blockquote className="text-[15.5px] leading-[1.72] text-ink text-pretty">
                   {t.short}
                 </blockquote>
                 <figcaption className="mt-6 flex items-center gap-3 border-t border-sand/40 pt-5">
