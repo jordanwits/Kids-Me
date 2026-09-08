@@ -1,0 +1,273 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Kids & Me Preschool — brand tokens
+   Palette from the LogoTournament brand sheet (Pantone-matched).
+   Neutrals are derived so body copy clears WCAG AA on cream.
+   ============================================================ */
+@theme {
+  /* Brand */
+  --color-coral: #ee9b7e; /* PMS 486 C */
+  --color-sand: #c6b09c; /* PMS 480 C */
+  --color-slate: #738092; /* PMS 7544 C */
+  --color-teal: #7babab; /* PMS 5493 C */
+  --color-mauve: #aa99aa; /* PMS 5215 C */
+  --color-gold: #ebb75f; /* PMS 141 C */
+
+  /* Derived tints & shades */
+  --color-coral-soft: #f8d6c8;
+  --color-coral-deep: #d97b57;
+  --color-teal-soft: #d3e6e6;
+  --color-teal-deep: #588f8f;
+  --color-gold-soft: #f8e3bd;
+  --color-mauve-soft: #e4dbe4;
+  --color-sand-soft: #ece2d8;
+
+  /* Surfaces */
+  --color-cream: #fdf7f0;
+  --color-cream-deep: #f7ede2;
+  --color-shell: #fffcf8;
+
+  /* Text */
+  --color-ink: #333a45;
+  --color-ink-muted: #5e6979;
+  --color-slate-deep: #4a5567;
+
+  /* Type */
+  --font-display: var(--font-fredoka), "Trebuchet MS", sans-serif;
+  --font-sans: var(--font-outfit), "Segoe UI", system-ui, sans-serif;
+  --font-hand: var(--font-caveat), "Comic Sans MS", cursive;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01";
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-soft);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-teal-deep);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* Paper grain that sits over the whole page — keeps flat cream
+     from reading as sterile screen-white. */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.32;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  }
+
+  /* Organic photo masks — hand-cut rather than rounded-rect. */
+  .blob-a {
+    border-radius: 62% 38% 44% 56% / 48% 55% 45% 52%;
+  }
+  .blob-b {
+    border-radius: 42% 58% 63% 37% / 57% 42% 58% 43%;
+  }
+  .blob-c {
+    border-radius: 55% 45% 38% 62% / 40% 58% 42% 60%;
+  }
+
+  /* Crayon underline drawn under a headline word. */
+  .crayon {
+    position: relative;
+    display: inline-block;
+  }
+  .crayon::after {
+    content: "";
+    position: absolute;
+    left: -2%;
+    right: -2%;
+    bottom: -0.12em;
+    height: 0.28em;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 22' preserveAspectRatio='none'%3E%3Cpath d='M3 15C46 6 104 4 152 7c46 3 92 9 145 4' stroke='%23EBB75F' stroke-width='9' stroke-linecap='round' fill='none' opacity='.85'/%3E%3C/svg%3E");
+  }
+  .crayon-coral::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 22' preserveAspectRatio='none'%3E%3Cpath d='M3 15C46 6 104 4 152 7c46 3 92 9 145 4' stroke='%23EE9B7E' stroke-width='9' stroke-linecap='round' fill='none' opacity='.9'/%3E%3C/svg%3E");
+  }
+
+  /* Sticker-style card lift used on program + rate cards. */
+  .sticker {
+    box-shadow:
+      0 1px 0 rgb(51 58 69 / 0.04),
+      0 18px 40px -22px rgb(51 58 69 / 0.35);
+  }
+
+  .marquee-track {
+    animation: marquee 42s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+
+/* ---------- Motion ---------- */
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--tilt, 0deg));
+  }
+  50% {
+    transform: translateY(-12px) rotate(var(--tilt, 0deg));
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(10px, -14px) rotate(4deg);
+  }
+  66% {
+    transform: translate(-8px, 8px) rotate(-3deg);
+  }
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: var(--len, 400);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.anim-rise {
+  opacity: 0;
+  animation: rise 0.85s var(--ease-out-soft) forwards;
+}
+.anim-float {
+  animation: float-slow 7s ease-in-out infinite;
+}
+.anim-drift {
+  animation: drift 16s ease-in-out infinite;
+}
+
+/* Reveal-on-scroll (IntersectionObserver toggles data-visible) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.8s var(--ease-out-soft),
+    transform 0.8s var(--ease-out-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal][data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  .anim-rise {
+    opacity: 1;
+  }
+}
+
+/* ---------- Gallery marquee ----------
+   The track holds two identical copies and slides exactly -50%, so any mix of
+   card widths loops seamlessly. Duration is set from JS (--gal-duration) off the
+   measured track width, which keeps the speed constant in px/sec no matter how
+   many photos are in the strip or which breakpoint is active. */
+.gal-viewport {
+  overflow: hidden;
+}
+
+.gal-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--gal-duration, 120s) linear infinite;
+}
+
+.gal-viewport:hover .gal-track,
+.gal-viewport:focus-within .gal-track,
+.gal-track[data-paused="true"] {
+  animation-play-state: paused;
+}
+
+/* No motion: drop the duplicate copy and let the strip be swiped instead. */
+@media (prefers-reduced-motion: reduce) {
+  .gal-track {
+    animation: none !important;
+    transform: none !important;
+  }
+  .gal-viewport {
+    overflow-x: auto;
+  }
+  .gal-dupe {
+    display: none;
+  }
+}
