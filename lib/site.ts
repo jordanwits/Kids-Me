@@ -52,6 +52,7 @@ export type NavItem = { label: string; href: string; children?: NavChild[] };
  * so nothing in the menu lands you where you already are.
  */
 export const nav: NavItem[] = [
+  { label: "Home", href: "/" },
   {
     label: "About Us",
     href: "/about",

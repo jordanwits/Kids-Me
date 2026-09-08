@@ -90,7 +90,10 @@ export default function SiteFooter() {
 
           {/* ---------- sitemap ---------- */}
           <div className="grid grid-cols-2 gap-8">
-            {[nav.slice(0, 2), nav.slice(2)].map((group, gi) => (
+            {/* Split after Programs, so Home rides above the two dropdown
+                parents in column one and the shorter items stay in column two.
+                Slicing at 2 would leave column one nearly empty. */}
+            {[nav.slice(0, 3), nav.slice(3)].map((group, gi) => (
               <div key={gi} className="space-y-7">
                 {group.map((item) => (
                   <div key={item.label}>

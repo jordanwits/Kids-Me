@@ -73,7 +73,7 @@ export default function Testimonials() {
               href="/about#applause"
               className="group inline-flex items-center gap-2 font-display text-[16px] font-medium text-teal-deep transition-colors hover:text-ink"
             >
-              Read every review in full
+              See All Reviews
               <svg
                 viewBox="0 0 24 24"
                 fill="none"

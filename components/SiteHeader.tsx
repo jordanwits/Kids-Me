@@ -55,7 +55,12 @@ export default function SiteHeader() {
      children's routes — so "About Us" stays lit while you are on /staff. */
   const isCurrent = (href: string, children?: readonly { href: string }[]) => {
     const routes = [routeOf(href), ...(children ?? []).map((c) => routeOf(c.href))];
-    return routes.some((r) => r !== "/" && pathname.startsWith(r));
+    /* "/" has to match exactly — every path starts with it, so a prefix test
+       would light up Home on every page. Everything else matches by prefix so
+       a child route (e.g. /staff under About Us) still lights its parent. */
+    return routes.some((r) =>
+      r === "/" ? pathname === "/" : pathname.startsWith(r),
+    );
   };
 
   return (
