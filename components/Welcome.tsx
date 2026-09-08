@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Reveal from "./Reveal";
 import { ConfettiDots, PaperEdge } from "./Decor";
 
@@ -104,11 +105,11 @@ export default function Welcome() {
 
           <Reveal delay={240}>
             <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <a
-                href="#programs"
+              <Link
+                href="/about"
                 className="group inline-flex items-center gap-2 font-display text-[16px] font-medium text-teal-deep transition-colors hover:text-ink"
               >
-                See our three classrooms
+                More about the school
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -123,10 +124,12 @@ export default function Welcome() {
                     strokeLinejoin="round"
                   />
                 </svg>
-              </a>
+              </Link>
               <span aria-hidden className="hidden h-4 w-px bg-sand sm:block" />
+              {/* The old "licensed capacity of 72" line was removed: no source
+                  on the current site or in the scope of work supports it. */}
               <p className="text-[14px] text-ink-muted">
-                Licensed capacity of 72 · three age-grouped rooms
+                Three age-grouped rooms · ages 2 to 6
               </p>
             </div>
           </Reveal>

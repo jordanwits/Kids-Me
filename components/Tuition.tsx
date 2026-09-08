@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Reveal from "./Reveal";
 import { rates, site } from "@/lib/site";
 import { ConfettiDots, Wave } from "./Decor";
@@ -100,8 +101,8 @@ export default function Tuition() {
                     </ul>
 
                     <div className="mt-auto pt-7">
-                      <a
-                        href="#enroll"
+                      <Link
+                        href="/enrollment#form"
                         className={`block rounded-full py-3.5 text-center font-display text-[15.5px] font-medium transition-all duration-200 hover:-translate-y-0.5 ${
                           r.featured
                             ? "bg-coral text-ink hover:bg-coral-deep hover:text-white"
@@ -109,7 +110,7 @@ export default function Tuition() {
                         }`}
                       >
                         {r.featured ? "Enroll now" : "Get started"}
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </Reveal>
@@ -141,6 +142,12 @@ export default function Tuition() {
                 </a>{" "}
                 and we&apos;ll walk you through what your week would look like.
               </p>
+              <Link
+                href="/enrollment#rates"
+                className="shrink-0 rounded-full border-2 border-cream/30 px-6 py-3 font-display text-[15px] font-medium text-cream transition-all duration-200 hover:-translate-y-0.5 hover:border-cream/70"
+              >
+                Full tuition details
+              </Link>
             </div>
           </Reveal>
         </div>

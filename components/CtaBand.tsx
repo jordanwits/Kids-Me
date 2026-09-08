@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Reveal from "./Reveal";
 import { site } from "@/lib/site";
 import Image from "next/image";
@@ -43,12 +44,12 @@ export default function CtaBand() {
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a
-              href="#enroll"
+            <Link
+              href="/enrollment#form"
               className="inline-flex w-full items-center justify-center rounded-full bg-ink px-8 py-4 font-display text-[17px] font-medium text-cream transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-deep sm:w-auto"
             >
               Register your child
-            </a>
+            </Link>
             <a
               href={site.phone.href}
               className="inline-flex w-full items-center justify-center gap-2 rounded-full border-2 border-ink/35 px-8 py-4 font-display text-[17px] font-medium text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:bg-shell/40 sm:w-auto"

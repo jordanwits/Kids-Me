@@ -24,6 +24,20 @@ export default function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    /* Anything already on screen when this mounts is shown straight away
+       rather than waiting on an observer callback. This is what makes deep
+       links work: landing on /programs#themes or /about#why puts a section
+       mid-page into view before any scrolling happens, and that content must
+       not depend on an intersection change that never comes. */
+    const rect = el.getBoundingClientRect();
+    const alreadyInView = rect.top < window.innerHeight && rect.bottom > 0;
+
+    if (alreadyInView || typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

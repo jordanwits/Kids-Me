@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Reveal from "./Reveal";
 import { featureIcons } from "./Decor";
 
@@ -41,14 +42,8 @@ const features = [
   },
 ];
 
-const events = [
-  "Valentine's Day Party",
-  "Halloween Carnival",
-  "Easter Egg Hunt",
-  "Thanksgiving Feast",
-  "Summer Water Play",
-  "A visit from Santa",
-];
+/* The special-events band that used to close this section now lives on
+   /programs, where it sits beside the monthly-themes calendar. */
 
 export default function WhyUs() {
   return (
@@ -78,12 +73,34 @@ export default function WhyUs() {
               to keep finding it later. Everything here is built to make those
               first years feel good.
             </p>
-            <a
-              href="#enroll"
-              className="mt-8 inline-flex items-center justify-center rounded-full bg-slate-deep px-7 py-3.5 font-display text-[16px] font-medium text-cream transition-all duration-200 hover:-translate-y-0.5 hover:bg-ink"
-            >
-              Book a visit
-            </a>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <Link
+                href="/enrollment#tour"
+                className="inline-flex items-center justify-center rounded-full bg-slate-deep px-7 py-3.5 font-display text-[16px] font-medium text-cream transition-all duration-200 hover:-translate-y-0.5 hover:bg-ink"
+              >
+                Book a visit
+              </Link>
+              <Link
+                href="/about#why"
+                className="group inline-flex items-center gap-2 font-display text-[16px] font-medium text-teal-deep transition-colors hover:text-ink"
+              >
+                Why choose us
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden
+                  className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+                >
+                  <path
+                    d="M5 12h13m0 0-5.2-5.2M18 12l-5.2 5.2"
+                    stroke="currentColor"
+                    strokeWidth="2.1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
+            </div>
           </Reveal>
         </div>
 
@@ -112,42 +129,6 @@ export default function WhyUs() {
         </div>
       </div>
 
-      {/* ---------- full-bleed photo band + special events ---------- */}
-      <Reveal className="mt-16 lg:mt-20">
-        <div className="relative mx-auto max-w-[1440px] px-5">
-          <div className="relative overflow-hidden rounded-[40px]">
-            <Image
-              src="/images/why-choose-redding-preschools.jpg"
-              alt="The playground and grounds at Kids &amp; Me Preschool"
-              width={1200}
-              height={400}
-              sizes="(max-width: 1440px) 100vw, 1400px"
-              className="h-[320px] w-full object-cover sm:h-[380px]"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/55 to-ink/15" />
-            <div className="absolute inset-0 flex items-center">
-              <div className="max-w-[640px] px-7 sm:px-12 lg:px-16">
-                <p className="font-hand text-[24px] leading-none text-gold">
-                  Six times a year, we throw a party
-                </p>
-                <h3 className="mt-3 font-display text-[clamp(1.5rem,3vw,2.2rem)] font-semibold leading-tight text-cream text-balance">
-                  Because childhood should have some occasions in it.
-                </h3>
-                <ul className="mt-6 flex flex-wrap gap-2">
-                  {events.map((e) => (
-                    <li
-                      key={e}
-                      className="rounded-full border border-cream/30 bg-cream/10 px-3.5 py-1.5 text-[13px] font-medium text-cream backdrop-blur-sm"
-                    >
-                      {e}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Reveal>
     </section>
   );
 }

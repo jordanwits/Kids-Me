@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { site } from "@/lib/site";
 import { ConfettiDots, PaperEdge } from "./Decor";
 
@@ -53,8 +54,8 @@ export default function Hero() {
             className="anim-rise mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
             style={{ animationDelay: "360ms" }}
           >
-            <a
-              href="#enroll"
+            <Link
+              href="/enrollment#form"
               className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-coral px-8 py-4 font-display text-[17px] font-medium text-ink shadow-[0_16px_34px_-16px_rgba(217,123,87,1)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-coral-deep hover:text-white hover:shadow-[0_22px_44px_-18px_rgba(217,123,87,1)]"
             >
               Start Your Registration
@@ -72,13 +73,13 @@ export default function Hero() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </a>
-            <a
-              href="#enroll"
+            </Link>
+            <Link
+              href="/enrollment#tour"
               className="inline-flex items-center justify-center gap-2.5 rounded-full border-2 border-slate/40 px-8 py-4 font-display text-[17px] font-medium text-slate-deep transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-deep hover:bg-shell"
             >
               Request a Tour
-            </a>
+            </Link>
           </div>
 
           <dl
@@ -86,7 +87,9 @@ export default function Hero() {
             style={{ animationDelay: "460ms" }}
           >
             {[
-              { k: "47 years", v: "caring for Redding kids" },
+              // "Since 1978" rather than a year count: the current site still
+              // says "over 33 years", which is what a hardcoded number becomes.
+              { k: "Since 1978", v: "caring for Redding kids" },
               { k: "Ages 2–6", v: "three age-grouped classrooms" },
               { k: "7:00–5:30", v: "Monday through Friday" },
             ].map((s) => (

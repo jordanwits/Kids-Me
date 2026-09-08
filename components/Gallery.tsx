@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Reveal from "./Reveal";
 
@@ -352,12 +353,36 @@ export default function Gallery() {
     <section id="gallery" className="scroll-mt-24 bg-cream pb-14 pt-16 sm:pt-20">
       <div className="mx-auto max-w-[1240px] px-5">
         <Reveal>
-          <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
-            Gallery
-          </p>
-          <h2 className="mt-3 max-w-[520px] font-display text-[clamp(2rem,4.2vw,3rem)] font-semibold leading-[1.05] tracking-[-0.015em] text-ink text-balance">
-            Have a look around.
-          </h2>
+          <div className="flex flex-wrap items-end justify-between gap-5">
+            <div>
+              <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
+                Gallery
+              </p>
+              <h2 className="mt-3 max-w-[520px] font-display text-[clamp(2rem,4.2vw,3rem)] font-semibold leading-[1.05] tracking-[-0.015em] text-ink text-balance">
+                Have a look around.
+              </h2>
+            </div>
+            <Link
+              href="/gallery"
+              className="group inline-flex items-center gap-2 rounded-full border-2 border-sand px-6 py-3 font-display text-[15.5px] font-medium text-slate-deep transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-deep"
+            >
+              Every photo, by room
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden
+                className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+              >
+                <path
+                  d="M5 12h13m0 0-5.2-5.2M18 12l-5.2 5.2"
+                  stroke="currentColor"
+                  strokeWidth="2.1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
+          </div>
         </Reveal>
       </div>
 

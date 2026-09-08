@@ -1,16 +1,19 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { nav, site } from "@/lib/site";
 import { ConfettiDots } from "./Decor";
 
 const dotColors = ["bg-coral", "bg-teal", "bg-gold", "bg-mauve", "bg-sand"];
 
-// Contact stays linked from the footer sitemap; keep it out of the header.
-const headerNav = nav.filter((item) => item.href !== "#contact");
+/** "/about#why" -> "/about", so a hash link still lights up its parent. */
+const routeOf = (href: string) => href.split("#")[0] || "/";
 
 export default function SiteHeader() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [drawer, setDrawer] = useState(false);
@@ -42,10 +45,24 @@ export default function SiteHeader() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // Any route change closes whatever is open.
+  useEffect(() => {
+    setDrawer(false);
+    setOpenMenu(null);
+  }, [pathname]);
+
+  /* An item is current when you are on its own route or on one of its
+     children's routes — so "About Us" stays lit while you are on /staff. */
+  const isCurrent = (href: string, children?: readonly { href: string }[]) => {
+    const routes = [routeOf(href), ...(children ?? []).map((c) => routeOf(c.href))];
+    return routes.some((r) => r !== "/" && pathname.startsWith(r));
+  };
+
   return (
     <>
       {/* ---------- Utility strip: phone + email on every page ---------- */}
-      <div className="bg-slate-deep text-cream/85">
+      {/* id="top" so the footer's "Back to top" link resolves on every route. */}
+      <div id="top" className="bg-slate-deep text-cream/85">
         <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-center gap-x-6 gap-y-1 px-5 py-2 text-[12.5px] tracking-wide sm:justify-between">
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1">
             <a
@@ -93,7 +110,7 @@ export default function SiteHeader() {
           }`}
           onMouseLeave={() => setOpenMenu(null)}
         >
-          <a href="#top" className="relative flex shrink-0 items-center">
+          <Link href="/" className="relative flex shrink-0 items-center">
             <Image
               src="/kids-me-logo.png"
               alt="Kids &amp; Me Preschool"
@@ -104,24 +121,28 @@ export default function SiteHeader() {
                 scrolled ? "h-12 sm:h-14" : "h-16 sm:h-[72px]"
               }`}
             />
-          </a>
+          </Link>
 
           {/* Desktop links */}
           <ul className="hidden items-center gap-0.5 xl:flex">
-            {headerNav.map((item) => {
+            {nav.map((item) => {
               const isOpen = openMenu === item.label;
+              const current = isCurrent(item.href, item.children);
               return (
                 <li
                   key={item.label}
                   className="relative"
                   onMouseEnter={() => setOpenMenu(item.children ? item.label : null)}
                 >
-                  <a
+                  <Link
                     href={item.href}
                     aria-haspopup={item.children ? "true" : undefined}
                     aria-expanded={item.children ? isOpen : undefined}
+                    aria-current={current ? "page" : undefined}
                     className={`group relative flex items-center gap-1 rounded-full px-3.5 py-2 font-sans text-[14.5px] font-medium transition-colors ${
-                      isOpen ? "text-coral-deep" : "text-ink hover:text-coral-deep"
+                      isOpen || current
+                        ? "text-coral-deep"
+                        : "text-ink hover:text-coral-deep"
                     }`}
                   >
                     {item.label}
@@ -135,10 +156,12 @@ export default function SiteHeader() {
                     <span
                       aria-hidden
                       className={`absolute inset-x-3.5 -bottom-0.5 h-[3px] origin-left rounded-full bg-gold transition-transform duration-300 ${
-                        isOpen ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                        isOpen || current
+                          ? "scale-x-100"
+                          : "scale-x-0 group-hover:scale-x-100"
                       }`}
                     />
-                  </a>
+                  </Link>
 
                   {item.children && (
                     <div
@@ -150,7 +173,7 @@ export default function SiteHeader() {
                     >
                       <div className="overflow-hidden rounded-[22px] border border-sand/35 bg-shell p-2 shadow-[0_28px_60px_-30px_rgba(51,58,69,.55)]">
                         {item.children.map((child, i) => (
-                          <a
+                          <Link
                             key={child.label}
                             href={child.href}
                             onClick={() => setOpenMenu(null)}
@@ -172,7 +195,7 @@ export default function SiteHeader() {
                                 </span>
                               )}
                             </span>
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </div>
@@ -183,13 +206,13 @@ export default function SiteHeader() {
           </ul>
 
           <div className="flex items-center gap-2.5">
-            <a
-              href="#enroll"
+            <Link
+              href="/enrollment#form"
               className="group relative hidden items-center gap-2 rounded-full bg-coral px-5 py-2.5 font-display text-[15px] font-medium text-ink shadow-[0_10px_22px_-12px_rgba(217,123,87,.9)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-coral-deep hover:text-white sm:inline-flex"
             >
-              Request a Tour
+              Enroll Now
               <ConfettiDots className="pointer-events-none absolute -right-2 -top-3 h-5 w-9 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-            </a>
+            </Link>
 
             <button
               type="button"
@@ -257,27 +280,36 @@ export default function SiteHeader() {
 
           <div className="flex-1 overflow-y-auto px-4 py-4">
             <ul className="space-y-1">
-              {headerNav.map((item) => {
+              {nav.map((item) => {
                 const expanded = openAccordion === item.label;
                 return (
                   <li key={item.label} className="border-b border-sand/25 last:border-0">
                     {item.children ? (
                       <>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setOpenAccordion(expanded ? null : item.label)
-                          }
-                          aria-expanded={expanded}
-                          className="flex w-full items-center justify-between px-2 py-3.5 text-left font-display text-lg font-medium text-ink"
-                        >
-                          {item.label}
-                          <ChevronIcon
-                            className={`h-3.5 w-3.5 text-ink-muted transition-transform duration-200 ${
-                              expanded ? "rotate-180" : ""
-                            }`}
-                          />
-                        </button>
+                        <div className="flex items-center">
+                          <Link
+                            href={item.href}
+                            onClick={() => setDrawer(false)}
+                            className="flex-1 px-2 py-3.5 font-display text-lg font-medium text-ink"
+                          >
+                            {item.label}
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setOpenAccordion(expanded ? null : item.label)
+                            }
+                            aria-expanded={expanded}
+                            aria-label={`${expanded ? "Collapse" : "Expand"} ${item.label}`}
+                            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-muted"
+                          >
+                            <ChevronIcon
+                              className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                                expanded ? "rotate-180" : ""
+                              }`}
+                            />
+                          </button>
+                        </div>
                         <div
                           className={`grid transition-all duration-300 ${
                             expanded
@@ -289,7 +321,7 @@ export default function SiteHeader() {
                             <ul className="space-y-0.5 pb-3 pl-3">
                               {item.children.map((child, i) => (
                                 <li key={child.label}>
-                                  <a
+                                  <Link
                                     href={child.href}
                                     onClick={() => setDrawer(false)}
                                     className="flex items-center gap-2.5 rounded-xl px-2 py-2 text-[15px] text-ink-muted"
@@ -301,7 +333,7 @@ export default function SiteHeader() {
                                       }`}
                                     />
                                     {child.label}
-                                  </a>
+                                  </Link>
                                 </li>
                               ))}
                             </ul>
@@ -309,13 +341,13 @@ export default function SiteHeader() {
                         </div>
                       </>
                     ) : (
-                      <a
+                      <Link
                         href={item.href}
                         onClick={() => setDrawer(false)}
                         className="block px-2 py-3.5 font-display text-lg font-medium text-ink"
                       >
                         {item.label}
-                      </a>
+                      </Link>
                     )}
                   </li>
                 );
@@ -323,20 +355,20 @@ export default function SiteHeader() {
             </ul>
 
             <div className="mt-6 space-y-2.5">
-              <a
-                href="#enroll"
+              <Link
+                href="/enrollment#form"
                 onClick={() => setDrawer(false)}
                 className="block rounded-full bg-coral px-5 py-3.5 text-center font-display text-base font-medium text-ink"
               >
-                Request a Tour
-              </a>
-              <a
-                href="#enroll"
+                Register Online
+              </Link>
+              <Link
+                href="/enrollment#tour"
                 onClick={() => setDrawer(false)}
                 className="block rounded-full border-2 border-slate/45 px-5 py-3.5 text-center font-display text-base font-medium text-slate-deep"
               >
-                Register Online
-              </a>
+                Request a Tour
+              </Link>
             </div>
 
             <div className="mt-6 rounded-3xl bg-cream-deep p-5 text-sm">

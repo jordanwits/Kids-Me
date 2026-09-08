@@ -1,9 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 import { nav, site } from "@/lib/site";
 
 export default function SiteFooter() {
   return (
-    <footer id="contact" className="scroll-mt-24 bg-ink text-cream/80">
+    <footer className="bg-ink text-cream/80">
       <div className="mx-auto max-w-[1240px] px-5 py-16 sm:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.15fr_1fr_.9fr] lg:gap-10">
           {/* ---------- identity + contact ---------- */}
@@ -93,22 +94,22 @@ export default function SiteFooter() {
               <div key={gi} className="space-y-7">
                 {group.map((item) => (
                   <div key={item.label}>
-                    <a
+                    <Link
                       href={item.href}
                       className="font-display text-[15px] font-medium uppercase tracking-[0.1em] text-gold transition-colors hover:text-cream"
                     >
                       {item.label}
-                    </a>
+                    </Link>
                     {item.children && (
                       <ul className="mt-3 space-y-2">
                         {item.children.map((c) => (
                           <li key={c.label}>
-                            <a
+                            <Link
                               href={c.href}
                               className="text-[14.5px] text-cream/70 transition-colors hover:text-cream"
                             >
                               {c.label}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -132,18 +133,18 @@ export default function SiteFooter() {
                 Registration is $100 per family, one time, and covers every
                 child you enroll.
               </p>
-              <a
-                href="#enroll"
+              <Link
+                href="/enrollment#form"
                 className="mt-5 block rounded-full bg-coral py-3.5 text-center font-display text-[15.5px] font-medium text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold"
               >
                 Start registration
-              </a>
-              <a
-                href="#tuition"
+              </Link>
+              <Link
+                href="/enrollment#rates"
                 className="mt-2.5 block rounded-full border border-cream/25 py-3.5 text-center font-display text-[15.5px] font-medium text-cream transition-colors hover:border-cream/60"
               >
                 See our rates
-              </a>
+              </Link>
             </div>
 
             <p className="mt-5 text-[13px] leading-relaxed text-cream/50">

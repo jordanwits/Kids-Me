@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Fredoka, Outfit, Caveat } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 
 /* Rockford Sans (brand sheet) has no web licence, so the type system stands in
    with the closest free relatives: Fredoka carries the logo's rounded geometric
@@ -74,7 +76,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
+        <SiteHeader />
+        <main>{children}</main>
+        <SiteFooter />
       </body>
     </html>
   );
