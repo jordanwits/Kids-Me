@@ -161,12 +161,19 @@ export const rates = [
  * fee everyone pays on top. Kept separate so it can only ever render as a fee
  * line beneath the rate cards.
  */
+/*
+ * Everything below is supported by the one line the current site publishes:
+ * "Registration fee: $100 per family, one-time fee." Per-family gives us
+ * "covers every child you enroll", one-time gives us "never charged twice".
+ * Do NOT add what the fee covers (supplies, materials, holding a place) —
+ * none of that is documented anywhere, and it is the school's money.
+ */
 export const registration = {
   price: "$100",
   unit: "one time",
   summary: "Per family, not per child",
   detail:
-    "Covers every child you enroll, plus supplies and materials for the year. Never charged twice.",
+    "One fee for the whole family, however many children you enroll. Never charged twice.",
 } as const;
 
 /**

@@ -352,8 +352,8 @@ export default function EnrollmentPage() {
               Registration is $100 per family, charged once.
             </h2>
             <p className="mx-auto mt-4 max-w-[50ch] text-[16.5px] leading-[1.7] text-ink-muted text-pretty">
-              Not per child, and never charged twice. It covers supplies and
-              materials for the year and secures your spot.
+              Not per child, and never charged twice — one fee covers every
+              child you enroll.
             </p>
           </div>
         </Reveal>
