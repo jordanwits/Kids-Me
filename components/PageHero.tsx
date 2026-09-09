@@ -14,6 +14,7 @@ export default function PageHero({
   crayon,
   blurb,
   edge = "#FDF7F0",
+  media,
   children,
 }: {
   eyebrow: string;
@@ -24,8 +25,39 @@ export default function PageHero({
   blurb?: string;
   /** Fill colour of the torn edge, matched to the next section's background. */
   edge?: string;
+  /** Optional artwork. Given one, the hero splits in two on large screens:
+   *  media left, copy right. Stacks copy-first on narrow screens. */
+  media?: React.ReactNode;
   children?: React.ReactNode;
 }) {
+  const copy = (
+    <>
+      <p className="font-hand text-[26px] leading-none text-coral-deep">
+        {eyebrow}
+      </p>
+      <h1 className="anim-rise mt-2.5 max-w-[20ch] font-display text-[clamp(2.3rem,5.4vw,4rem)] font-semibold leading-[1.02] tracking-[-0.02em] text-ink text-balance">
+        {title}
+        {crayon && (
+          <>
+            {" "}
+            <span className="crayon crayon-coral">{crayon}</span>
+          </>
+        )}
+      </h1>
+
+      {blurb && (
+        <p
+          className="anim-rise mt-6 max-w-[58ch] text-[17px] leading-[1.75] text-ink-muted text-pretty sm:text-[18px]"
+          style={{ animationDelay: "140ms" }}
+        >
+          {blurb}
+        </p>
+      )}
+
+      {children && <div className="mt-8">{children}</div>}
+    </>
+  );
+
   return (
     <section className="relative overflow-hidden bg-cream pt-10 sm:pt-12">
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -57,29 +89,14 @@ export default function PageHero({
           </ol>
         </nav>
 
-        <p className="font-hand text-[26px] leading-none text-coral-deep">
-          {eyebrow}
-        </p>
-        <h1 className="anim-rise mt-2.5 max-w-[20ch] font-display text-[clamp(2.3rem,5.4vw,4rem)] font-semibold leading-[1.02] tracking-[-0.02em] text-ink text-balance">
-          {title}
-          {crayon && (
-            <>
-              {" "}
-              <span className="crayon crayon-coral">{crayon}</span>
-            </>
-          )}
-        </h1>
-
-        {blurb && (
-          <p
-            className="anim-rise mt-6 max-w-[58ch] text-[17px] leading-[1.75] text-ink-muted text-pretty sm:text-[18px]"
-            style={{ animationDelay: "140ms" }}
-          >
-            {blurb}
-          </p>
+        {media ? (
+          <div className="grid items-center gap-12 lg:grid-cols-[.95fr_1.05fr] lg:gap-16">
+            <div className="order-2 lg:order-1">{media}</div>
+            <div className="order-1 lg:order-2">{copy}</div>
+          </div>
+        ) : (
+          copy
         )}
-
-        {children && <div className="mt-8">{children}</div>}
       </div>
 
       <PaperEdge fill={edge} className="relative -mb-px" />

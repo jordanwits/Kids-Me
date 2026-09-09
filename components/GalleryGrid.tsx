@@ -13,12 +13,8 @@ import { galleryCategories, galleryPhotos } from "@/lib/content";
  */
 
 const filters = [
-  { slug: "all", label: "Everything", blurb: "Every room and the grounds." },
-  ...galleryCategories.map((c) => ({
-    slug: c.slug,
-    label: c.label,
-    blurb: c.blurb,
-  })),
+  { slug: "all", label: "Everything" },
+  ...galleryCategories.map((c) => ({ slug: c.slug, label: c.label })),
 ];
 
 export default function GalleryGrid() {
@@ -91,11 +87,8 @@ export default function GalleryGrid() {
         })}
       </div>
 
-      <p className="mt-5 text-center text-[15px] text-ink-muted">
-        {filters.find((f) => f.slug === filter)?.blurb}{" "}
-        <span className="text-ink-muted/70">
-          ({shots.length} photo{shots.length === 1 ? "" : "s"})
-        </span>
+      <p className="mt-5 text-center text-[15px] text-ink-muted/70">
+        {shots.length} photo{shots.length === 1 ? "" : "s"}
       </p>
 
       {/* ---------- grid ---------- */}
