@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import PageHero from "@/components/PageHero";
+import RegistrationFrame from "@/components/RegistrationFrame";
 import Reveal from "@/components/Reveal";
 import { ConfettiDots, PaperEdge, Wave } from "@/components/Decor";
 import { rates, registration, site } from "@/lib/site";
@@ -283,9 +284,11 @@ export default function EnrollmentPage() {
             </div>
 
             {/* ---------- right: embedded registration form ---------- */}
+            {/* Edge to edge on a phone, so the form gets every pixel of width
+                before RegistrationFrame has to shrink it; a card from sm up. */}
             <Reveal delay={80}>
-              <div className="sticker overflow-hidden rounded-[34px] border border-sand/40 bg-shell">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-sand/40 bg-cream-deep/60 px-6 py-4 sm:px-7">
+              <div className="sticker -mx-5 overflow-hidden border-y border-sand/40 bg-shell sm:mx-0 sm:rounded-[34px] sm:border">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-sand/40 bg-cream-deep/60 px-5 py-4 sm:px-7">
                   <div>
                     <h3 className="font-display text-[20px] font-semibold leading-tight text-ink">
                       Registration &amp; interest form
@@ -313,14 +316,13 @@ export default function EnrollmentPage() {
                   </a>
                 </div>
 
-                <iframe
+                <RegistrationFrame
                   src={site.registrationFormUrl}
                   title="Kids &amp; Me Preschool registration and interest form"
-                  loading="lazy"
-                  className="h-[760px] w-full border-0 bg-white sm:h-[820px]"
+                  className="h-[760px] sm:h-[820px]"
                 />
 
-                <p className="border-t border-sand/40 px-6 py-3.5 text-[12.5px] text-ink-muted sm:px-7">
+                <p className="border-t border-sand/40 px-5 py-3.5 text-[12.5px] text-ink-muted sm:px-7">
                   Trouble with the form? Call{" "}
                   <a
                     href={site.phone.href}
