@@ -68,8 +68,12 @@ export default function Welcome() {
             </p>
             <h2 className="mt-3 font-display text-[clamp(2.1rem,4.4vw,3.2rem)] font-semibold leading-[1.05] tracking-[-0.015em] text-ink text-balance">
               A place where your child is{" "}
-              <span className="crayon crayon-coral">known</span>, not just
-              watched.
+              {/* nowrap holds the comma to "known": the crayon span is
+                  inline-block, which allows a line break straight after it. */}
+              <span className="whitespace-nowrap">
+                <span className="crayon crayon-coral">known</span>,
+              </span>{" "}
+              not just watched.
             </h2>
           </Reveal>
 

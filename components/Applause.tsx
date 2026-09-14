@@ -53,14 +53,19 @@ export default function Applause() {
     [],
   );
 
+  /* grid-cols-1 rather than the implicit auto track: an auto track sizes to
+     its content, so the tab row's full width stretched the column (and the
+     whole page) past a phone screen. grid-cols-1 is minmax(0, 1fr). */
   return (
-    <div className="grid gap-10 lg:grid-cols-[minmax(200px,.62fr)_1.38fr] lg:gap-14">
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(200px,.62fr)_1.38fr] lg:gap-14">
       {/* ---------- who is speaking ---------- */}
       <div>
         <p className="text-[12.5px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
           Four families
         </p>
 
+        {/* Below lg the names are a 2x2 grid (one row of four from sm), so
+            all four are on screen without a sideways scroll. */}
         <div
           role="tablist"
           aria-label="Choose a review to read"
@@ -75,7 +80,7 @@ export default function Applause() {
               step(-1);
             }
           }}
-          className="mt-5 flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:gap-0 lg:overflow-visible lg:pb-0"
+          className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:flex lg:flex-col lg:gap-0"
         >
           {testimonials.map((t, n) => {
             const on = n === i;

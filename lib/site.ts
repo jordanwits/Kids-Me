@@ -34,7 +34,8 @@ export const site = {
     label: "office.kidsandmeredding@gmail.com",
     href: "mailto:office.kidsandmeredding@gmail.com",
   },
-  hours: "Monday – Friday, 7:00 a.m. – 5:30 p.m.",
+  //   keeps each time on the same line as its a.m./p.m.
+  hours: "Monday – Friday, 7:00 a.m. – 5:30 p.m.",
   registrationFormUrl:
     "https://schools.procareconnect.com/form/4f0c76fe-a9a0-4bab-a861-15e32b50b916",
   mapUrl:
@@ -126,7 +127,7 @@ export const rates = [
     price: "$52",
     unit: "/ day",
     placeholder: true,
-    hours: "Up to 10.5 hours · 7:00 a.m. – 5:30 p.m.",
+    hours: "Up to 10.5 hours · 7:00 a.m. – 5:30 p.m.",
     accent: "teal",
     features: [
       // No breakfast: the current site publishes "Nutritious lunches and

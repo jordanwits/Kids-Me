@@ -60,7 +60,9 @@ export default function Tuition() {
                         </span>
                       )}
                     </div>
-                    <p className="mt-1.5 min-h-[2.6rem] text-[13.5px] leading-snug text-ink-muted">
+                    {/* md only: the min height lines the two prices up side by
+                        side. Stacked on a phone it was just a gap. */}
+                    <p className="mt-1.5 text-[13.5px] leading-snug text-ink-muted md:min-h-[2.6rem]">
                       {r.hours}
                     </p>
 

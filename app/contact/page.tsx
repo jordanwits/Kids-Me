@@ -63,22 +63,25 @@ export default function ContactPage() {
                       <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-teal-soft text-teal-deep">
                         <PhoneIcon className="h-5 w-5" />
                       </span>
+                      {/* Each number and its note wrap as whole units: the
+                          narrow card would otherwise split a number at its
+                          hyphen. */}
                       <dd className="space-y-1.5">
                         <a
                           href={site.phone.href}
-                          className="block font-display text-[20px] font-medium leading-none text-ink transition-colors hover:text-coral-deep"
+                          className="flex flex-wrap items-center gap-x-2 gap-y-1 font-display text-[20px] font-medium leading-none text-ink transition-colors hover:text-coral-deep"
                         >
-                          {site.phone.label}
-                          <span className="ml-2 align-middle text-[12.5px] font-normal text-ink-muted">
+                          <span className="whitespace-nowrap">{site.phone.label}</span>
+                          <span className="whitespace-nowrap text-[12.5px] font-normal text-ink-muted">
                             {site.phone.note}
                           </span>
                         </a>
                         <a
                           href={site.phoneAlt.href}
-                          className="block text-[15px] text-ink-muted transition-colors hover:text-coral-deep"
+                          className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-[15px] text-ink-muted transition-colors hover:text-coral-deep"
                         >
-                          {site.phoneAlt.label}
-                          <span className="ml-2 text-[12.5px] text-ink-muted/75">
+                          <span className="whitespace-nowrap">{site.phoneAlt.label}</span>
+                          <span className="whitespace-nowrap text-[12.5px] text-ink-muted/75">
                             {site.phoneAlt.note}
                           </span>
                         </a>
@@ -91,11 +94,17 @@ export default function ContactPage() {
                         <MailIcon className="h-5 w-5" />
                       </span>
                       <dd>
+                        {/* <wbr> after the @ gives a narrow card a clean place
+                            to break the address, and copies as nothing (a
+                            zero-width space would ride along into a paste).
+                            The size eases down below ~360px so the domain half
+                            still fits on its own line. */}
                         <a
                           href={site.email.href}
-                          className="break-all font-display text-[16.5px] font-medium text-ink transition-colors hover:text-coral-deep"
+                          className="font-display text-[clamp(15px,4.6vw,16.5px)] font-medium text-ink transition-colors [overflow-wrap:anywhere] hover:text-coral-deep"
                         >
-                          {site.email.label}
+                          {site.email.label.split("@")[0]}@<wbr />
+                          {site.email.label.split("@")[1]}
                         </a>
                       </dd>
                     </div>

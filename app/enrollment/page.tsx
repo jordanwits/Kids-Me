@@ -81,7 +81,9 @@ export default function EnrollmentPage() {
                           </span>
                         )}
                       </div>
-                      <p className="mt-1.5 min-h-[2.6rem] text-[13.5px] leading-snug text-ink-muted">
+                      {/* md only: the min height lines the two prices up side
+                          by side. Stacked on a phone it was just a gap. */}
+                      <p className="mt-1.5 text-[13.5px] leading-snug text-ink-muted md:min-h-[2.6rem]">
                         {r.hours}
                       </p>
 
@@ -166,9 +168,11 @@ export default function EnrollmentPage() {
                 />
 
                 <div className="flex-1">
+                  {/* The summary takes its own line on a phone rather than
+                      wrapping mid-phrase and stranding "child". */}
                   <h3 className="font-display text-[17.5px] font-medium leading-tight text-cream">
                     Registration fee
-                    <span className="ml-2 text-[14px] font-normal text-cream/60">
+                    <span className="mt-1 block text-[14px] font-normal text-cream/60 sm:mt-0 sm:ml-2 sm:inline">
                       {registration.summary}
                     </span>
                   </h3>

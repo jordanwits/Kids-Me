@@ -68,18 +68,21 @@ export default function SiteHeader() {
       {/* ---------- Utility strip: phone + email on every page ---------- */}
       {/* id="top" so the footer's "Back to top" link resolves on every route. */}
       <div id="top" className="bg-slate-deep text-cream/85">
-        <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-center gap-x-6 gap-y-1 px-5 py-2 text-[12.5px] tracking-wide sm:justify-between">
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1">
+        <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-center gap-x-6 gap-y-1 px-5 py-1 text-[12.5px] tracking-wide sm:justify-between sm:py-2">
+          {/* On a phone the two links stack. py-1 gives each a 27px row rather
+              than 19px, so the pair clear 24px target spacing and the number
+              is easier to tap; the strip's own padding drops to match. */}
+          <div className="flex flex-wrap items-center justify-center gap-x-5">
             <a
               href={site.phone.href}
-              className="group inline-flex items-center gap-1.5 transition-colors hover:text-gold"
+              className="group inline-flex items-center gap-1.5 py-1 transition-colors hover:text-gold sm:py-0"
             >
               <PhoneIcon className="h-3.5 w-3.5 opacity-70 transition-opacity group-hover:opacity-100" />
               <span className="font-medium">{site.phone.label}</span>
             </a>
             <a
               href={site.email.href}
-              className="group inline-flex items-center gap-1.5 transition-colors hover:text-gold"
+              className="group inline-flex items-center gap-1.5 py-1 transition-colors hover:text-gold sm:py-0"
             >
               <MailIcon className="h-3.5 w-3.5 opacity-70 transition-opacity group-hover:opacity-100" />
               <span className="font-medium">{site.email.label}</span>
@@ -240,8 +243,14 @@ export default function SiteHeader() {
       </header>
 
       {/* ---------- Mobile drawer ---------- */}
+      {/* Closed, the drawer is visibility:hidden as well as off-canvas. Only
+          translated, its shadow bled a grey band in down the right edge of
+          every page and its links stayed in the tab order. visibility is
+          transitioned so it flips only once the panel has slid out. */}
       <div
-        className={`fixed inset-0 z-[70] xl:hidden ${drawer ? "" : "pointer-events-none"}`}
+        className={`fixed inset-0 z-[70] transition-[visibility] duration-350 xl:hidden ${
+          drawer ? "visible" : "pointer-events-none invisible"
+        }`}
         aria-hidden={!drawer}
       >
         <div
@@ -315,8 +324,12 @@ export default function SiteHeader() {
                             />
                           </button>
                         </div>
+                        {/* Rows and opacity only, not transition-all: with all,
+                            this would also ease the visibility it inherits,
+                            leaving its links focusable for ~300ms after the
+                            closed drawer hides. */}
                         <div
-                          className={`grid transition-all duration-300 ${
+                          className={`grid transition-[grid-template-rows,opacity] duration-300 ${
                             expanded
                               ? "grid-rows-[1fr] opacity-100"
                               : "grid-rows-[0fr] opacity-0"

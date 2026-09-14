@@ -416,7 +416,10 @@ export default function Gallery() {
               {/* Width is the smallest of: the viewport-width cap, an absolute
                   cap, and the width implied by the height cap for this photo's
                   own aspect ratio. That lets a photo grow to fill the viewport
-                  without ever distorting or letterboxing inside its border. */}
+                  without ever distorting or letterboxing inside its border.
+                  The height cap is the visible height (svh) less the 136px the
+                  padding, border and prev/next row need. A flat 84vh left too
+                  little on a landscape phone and pushed the controls off-screen. */}
               <Image
                 key={current.src}
                 src={current.src}
@@ -426,7 +429,7 @@ export default function Gallery() {
                 sizes="(max-width: 768px) 94vw, 1100px"
                 priority
                 style={{
-                  width: `min(94vw, 1100px, calc(84vh * ${(current.iw / current.ih).toFixed(4)}))`,
+                  width: `min(94vw, 1100px, calc((100svh - 136px) * ${(current.iw / current.ih).toFixed(4)}))`,
                 }}
                 className="h-auto rounded-[18px] border-[6px] border-shell shadow-[0_40px_90px_-30px_rgba(0,0,0,.8)]"
               />

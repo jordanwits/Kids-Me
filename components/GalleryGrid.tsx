@@ -136,7 +136,9 @@ export default function GalleryGrid() {
                 image's own ratio so a tall photo still fits the viewport.
                 Leaving width on `auto` lays the photo out at its intrinsic
                 size instead, which is what made the small sources (the two
-                320px portraits especially) open tiny. */}
+                320px portraits especially) open tiny. The height cap holds
+                back 136px of the visible height for padding, border and the
+                prev/next row, so the controls stay on a landscape phone. */}
             <div className="flex w-full items-center justify-center">
               <Image
                 src={active.src}
@@ -146,7 +148,7 @@ export default function GalleryGrid() {
                 sizes="(max-width: 768px) 94vw, 1100px"
                 priority
                 style={{
-                  width: `min(94vw, 1100px, calc(84vh * ${(
+                  width: `min(94vw, 1100px, calc((100svh - 136px) * ${(
                     active.w / active.h
                   ).toFixed(4)}))`,
                 }}

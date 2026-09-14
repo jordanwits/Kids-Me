@@ -66,25 +66,31 @@ export default function Programs() {
                     </p>
 
                     <div className="mt-6 border-t border-sand/40 pt-5">
+                      {/* Plain inline, not inline-flex: three-up at md the
+                          label wraps, and the arrow must travel with the last
+                          word rather than sit stranded at the card's edge. */}
                       <Link
                         href={`/programs#${p.slug}`}
-                        className={`inline-flex items-center gap-2 font-display text-[15px] font-medium ${a.text} transition-colors hover:text-ink`}
+                        className={`font-display text-[15px] font-medium ${a.text} transition-colors hover:text-ink`}
                       >
-                        See the full curriculum
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          aria-hidden
-                          className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1"
-                        >
-                          <path
-                            d="M5 12h13m0 0-5.2-5.2M18 12l-5.2 5.2"
-                            stroke="currentColor"
-                            strokeWidth="2.3"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        See the full{" "}
+                        <span className="whitespace-nowrap">
+                          curriculum
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden
+                            className="ml-2 inline-block h-3.5 w-3.5 align-middle transition-transform duration-200 group-hover:translate-x-1"
+                          >
+                            <path
+                              d="M5 12h13m0 0-5.2-5.2M18 12l-5.2 5.2"
+                              stroke="currentColor"
+                              strokeWidth="2.3"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </span>
                       </Link>
                     </div>
                   </div>
