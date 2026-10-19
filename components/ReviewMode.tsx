@@ -7,16 +7,22 @@ import { usePathname } from "next/navigation";
 import { nav } from "@/lib/site";
 
 /**
- * Client review mode — lets the client leave change requests section by
- * section on the real pages, then send them all in one go.
+ * Client review mode — lets the client leave notes on any line or block of
+ * text on the real pages, then send them all in one go.
  *
  * Off for everyone by default. Visiting any page with `?review=1` turns it on
  * (and it stays on across pages via localStorage); `?review=0` or the Exit
  * button turns it off. Notes are kept in localStorage too, so closing the tab
  * halfway through loses nothing.
  *
- * Sections are found automatically — every top-level <section> inside <main>,
- * labelled by its first heading — so new sections need no wiring.
+ * Text blocks are found automatically: every visible run of text in <main>
+ * and the footer, grouped up to its nearest non-inline element, gets
+ * `data-review-text`. Hover styles live in globals.css. Clicking one opens a
+ * note window instead of following any link it sits in. Buttons are left
+ * alone so tabs, accordions and galleries still work.
+ *
+ * Each top-level <section> also gets a "Note on this section" button for
+ * comments that aren't about one piece of text.
  *
  * Submissions go to Web3Forms (NEXT_PUBLIC_WEB3FORMS_KEY). Without a key the
  * Send step falls back to "copy your notes" so nothing is ever stuck.
@@ -32,20 +38,17 @@ type Note = {
   path: string;
   page: string;
   section: string;
-  quote?: string;
+  /** The text on the page the note is about (absent for section/general notes). */
+  original?: string;
+  /** Suggested new wording, when the client edited it. */
+  rewrite?: string;
+  /** Free-form comment. */
   text: string;
 };
+
+type Draft = Omit<Note, "id"> & { id?: string };
 
 type Target = { el: HTMLElement; label: string };
-
-type Draft = {
-  id?: string;
-  path: string;
-  page: string;
-  section: string;
-  quote?: string;
-  text: string;
-};
 
 const pages = nav.map((n) => ({ label: n.label, href: n.href }));
 
@@ -71,8 +74,12 @@ function isNarrow() {
   return window.matchMedia("(max-width: 639px)").matches;
 }
 
+function squash(s: string) {
+  return s.replace(/\s+/g, " ").trim();
+}
+
 function clean(s: string, max = 70) {
-  const t = s.replace(/\s+/g, " ").trim();
+  const t = squash(s);
   return t.length > max ? `${t.slice(0, max - 1)}…` : t;
 }
 
@@ -94,6 +101,48 @@ function findSections(): Target[] {
   });
 }
 
+const SKIP = "button, svg, script, style, noscript, iframe, [aria-hidden='true'], [data-review-ui]";
+
+/**
+ * Mark every visible block of text as clickable. A text node's block is its
+ * nearest ancestor that isn't plain `display: inline`, so a paragraph with a
+ * link in it is one target, while a pill-style link (inline-flex) is its own.
+ */
+function markText() {
+  const roots = document.querySelectorAll<HTMLElement>("main, footer");
+  for (const root of roots) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      if (!node.textContent || node.textContent.trim().length < 2) continue;
+      let el = node.parentElement;
+      if (!el || el.closest(SKIP) || el.closest("[data-review-text]")) continue;
+      while (
+        el.parentElement &&
+        el.parentElement !== root &&
+        getComputedStyle(el).display === "inline"
+      ) {
+        el = el.parentElement;
+      }
+      const box = el.getBoundingClientRect();
+      if (box.width <= 2 || box.height <= 2) continue; // sr-only labels
+      el.setAttribute("data-review-text", "");
+    }
+  }
+}
+
+function unmarkText() {
+  document
+    .querySelectorAll("[data-review-text]")
+    .forEach((el) => el.removeAttribute("data-review-text"));
+  document
+    .querySelectorAll("[data-review-noted]")
+    .forEach((el) => el.removeAttribute("data-review-noted"));
+}
+
+function textOf(el: HTMLElement) {
+  return squash(el.innerText || el.textContent || "");
+}
+
 function buildMessage(notes: Note[], name: string) {
   const lines: string[] = [`Change requests from ${name || "the client"}`, ""];
   const byPage = new Map<string, Note[]>();
@@ -103,11 +152,15 @@ function buildMessage(notes: Note[], name: string) {
     byPage.set(n.page, list);
   }
   for (const [page, list] of byPage) {
-    lines.push(`=== ${page} ===`);
+    lines.push(`=== ${page} ===`, "");
     for (const n of list) {
       lines.push(`• ${n.section}`);
-      if (n.quote) lines.push(`  About: "${n.quote}"`);
-      for (const l of n.text.split("\n")) lines.push(`  ${l}`);
+      if (n.original) lines.push(`  Text: "${n.original}"`);
+      if (n.rewrite) lines.push(`  Change to: "${n.rewrite}"`);
+      if (n.text) {
+        const [first, ...rest] = n.text.split("\n");
+        lines.push(`  Note: ${first}`, ...rest.map((l) => `        ${l}`));
+      }
       lines.push("");
     }
   }
@@ -123,14 +176,13 @@ export default function ReviewMode() {
   const [hovered, setHovered] = useState<HTMLElement | null>(null);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [trayOpen, setTrayOpen] = useState(true);
+  const [scanTick, setScanTick] = useState(0);
   const [status, setStatus] = useState<
     "idle" | "sending" | "sent" | "error" | "nokey"
   >("idle");
   const [copied, setCopied] = useState(false);
-  const lastSelection = useRef<{ text: string; node: Node | null }>({
-    text: "",
-    node: null,
-  });
+  const targetsRef = useRef<Target[]>([]);
+  targetsRef.current = targets;
 
   /* ---- switch on/off from the URL, restore saved state ---- */
   useEffect(() => {
@@ -138,7 +190,11 @@ export default function ReviewMode() {
     if (param === "1") store(FLAG_KEY, true);
     if (param === "0") store(FLAG_KEY, false);
     setOn(store<boolean>(FLAG_KEY) === true);
-    setNotes(store<Note[]>(NOTES_KEY) ?? []);
+    // Notes saved by the first version of review mode used `quote`.
+    const saved = (store<(Note & { quote?: string })[]>(NOTES_KEY) ?? []).map(
+      ({ quote, ...n }) => ({ ...n, original: n.original ?? quote }),
+    );
+    setNotes(saved);
     setName(store<string>(NAME_KEY) ?? "");
     setTrayOpen(!isNarrow());
   }, []);
@@ -151,15 +207,52 @@ export default function ReviewMode() {
     if (on) store(NAME_KEY, name);
   }, [name, on]);
 
-  /* ---- find this page's sections (after each navigation) ---- */
+  useEffect(() => {
+    document.documentElement.classList.toggle("review-on", on);
+  }, [on]);
+
+  /* ---- find this page's sections and text (after each navigation) ---- */
   useEffect(() => {
     if (!on) return;
-    const scan = () => setTargets(findSections());
-    const t = window.setTimeout(scan, 150);
-    return () => window.clearTimeout(t);
+    let timer = 0;
+    const scan = () => {
+      markText();
+      setScanTick((t) => t + 1);
+    };
+    const first = window.setTimeout(() => {
+      setTargets(findSections());
+      scan();
+    }, 150);
+    // Tabs, accordions and scroll reveals add text after load.
+    const observer = new MutationObserver(() => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(scan, 250);
+    });
+    const main = document.querySelector("main");
+    if (main) observer.observe(main, { childList: true, subtree: true, characterData: true });
+    return () => {
+      window.clearTimeout(first);
+      window.clearTimeout(timer);
+      observer.disconnect();
+    };
   }, [on, pathname]);
 
-  /* Buttons are absolutely positioned inside each section. */
+  useEffect(() => {
+    if (!on) unmarkText();
+  }, [on]);
+
+  /* Show which pieces of text already have a note. */
+  useEffect(() => {
+    if (!on) return;
+    const noted = new Set(
+      notes.filter((n) => n.path === pathname && n.original).map((n) => n.original),
+    );
+    document.querySelectorAll<HTMLElement>("[data-review-text]").forEach((el) => {
+      el.toggleAttribute("data-review-noted", noted.has(textOf(el)));
+    });
+  }, [notes, pathname, on, scanTick]);
+
+  /* Section buttons are absolutely positioned inside each section. */
   useEffect(() => {
     const touched: HTMLElement[] = [];
     for (const { el } of targets) {
@@ -171,7 +264,7 @@ export default function ReviewMode() {
     return () => touched.forEach((el) => (el.style.position = ""));
   }, [targets]);
 
-  /* Outline the section whose button is hovered, so it is obvious what a note is about. */
+  /* Outline the section whose button is hovered. */
   useEffect(() => {
     if (!hovered) return;
     hovered.style.outline = "3px dashed var(--color-coral-deep)";
@@ -182,40 +275,64 @@ export default function ReviewMode() {
     };
   }, [hovered]);
 
-  /* Remember the last highlighted words — tapping the button can clear the selection. */
+  const sectionFor = useCallback((el: HTMLElement) => {
+    if (el.closest("footer")) return "Footer";
+    const hit = targetsRef.current.find((t) => t.el.contains(el));
+    return hit?.label ?? "Page";
+  }, []);
+
+  /* ---- clicking a piece of text opens a note for it ---- */
+  const notesRef = useRef(notes);
+  notesRef.current = notes;
   useEffect(() => {
     if (!on) return;
-    const onSel = () => {
-      const sel = window.getSelection();
-      const text = sel?.toString().trim() ?? "";
-      if (text) lastSelection.current = { text, node: sel?.anchorNode ?? null };
+    const onClick = (e: MouseEvent) => {
+      const t = (e.target as HTMLElement | null)?.closest<HTMLElement>("[data-review-text]");
+      if (!t || t.closest("[data-review-ui]")) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const original = textOf(t);
+      const existing = notesRef.current.find(
+        (n) => n.path === pathname && n.original === original,
+      );
+      setDraft(
+        existing
+          ? { ...existing }
+          : {
+              path: pathname,
+              page: pageLabel(pathname),
+              section: sectionFor(t),
+              original,
+              text: "",
+            },
+      );
     };
-    document.addEventListener("selectionchange", onSel);
-    return () => document.removeEventListener("selectionchange", onSel);
-  }, [on]);
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, [on, pathname, sectionFor]);
 
-  const startNote = useCallback(
-    (section: string, el?: HTMLElement) => {
-      const { text, node } = lastSelection.current;
-      const quote = el && node && el.contains(node) ? clean(text, 200) : undefined;
-      lastSelection.current = { text: "", node: null };
-      setDraft({ path: pathname, page: pageLabel(pathname), section, quote, text: "" });
-    },
-    [pathname],
-  );
+  const startNote = (section: string) =>
+    setDraft({ path: pathname, page: pageLabel(pathname), section, text: "" });
+
+  const draftRewrite =
+    draft?.original && draft.rewrite && squash(draft.rewrite) !== draft.original
+      ? draft.rewrite.trim()
+      : undefined;
+  const canSave = !!draft && (!!draft.text.trim() || !!draftRewrite);
 
   const saveDraft = () => {
-    if (!draft || !draft.text.trim()) return;
-    const text = draft.text.trim();
+    if (!draft || !canSave) return;
+    const note = { ...draft, text: draft.text.trim(), rewrite: draftRewrite };
     setNotes((prev) =>
-      draft.id
-        ? prev.map((n) => (n.id === draft.id ? { ...n, text, quote: draft.quote } : n))
-        : [...prev, { ...draft, text, id: crypto.randomUUID?.() ?? String(Date.now()) }],
+      note.id
+        ? prev.map((n) => (n.id === note.id ? (note as Note) : n))
+        : [...prev, { ...note, id: crypto.randomUUID?.() ?? String(Date.now()) }],
     );
     setDraft(null);
-    setTrayOpen(!isNarrow());
     setStatus("idle");
   };
+
+  const removeNote = (id: string) => setNotes((prev) => prev.filter((x) => x.id !== id));
 
   const exit = () => {
     store(FLAG_KEY, false);
@@ -276,19 +393,18 @@ export default function ReviewMode() {
           <button
             key={label}
             type="button"
-            onClick={() => startNote(label, el)}
+            data-review-ui
+            onClick={() => startNote(label)}
             onMouseEnter={() => setHovered(el)}
             onMouseLeave={() => setHovered(null)}
             onFocus={() => setHovered(el)}
             onBlur={() => setHovered(null)}
-            className="absolute right-3 top-3 z-40 inline-flex min-h-11 items-center gap-2 rounded-full bg-coral-deep px-4 py-2 font-sans text-[14px] font-semibold text-white shadow-[0_8px_20px_-8px_rgba(51,58,69,.6)] ring-2 ring-white transition-transform hover:scale-105 sm:right-5 sm:top-5"
+            className="absolute left-1/2 top-3 z-40 inline-flex -translate-x-1/2 whitespace-nowrap min-h-10 items-center gap-1.5 rounded-full bg-ink/85 px-3.5 py-1.5 font-sans text-[13px] font-semibold text-cream shadow-[0_8px_20px_-8px_rgba(51,58,69,.6)] backdrop-blur-sm transition-colors hover:bg-coral-deep sm:top-5"
           >
             <PencilIcon />
-            Suggest a change
+            Note on this section
             {count > 0 && (
-              <span className="rounded-full bg-white px-2 text-[12px] text-coral-deep">
-                {count}
-              </span>
+              <span className="rounded-full bg-cream px-1.5 text-[12px] text-ink">{count}</span>
             )}
           </button>,
           el,
@@ -297,7 +413,10 @@ export default function ReviewMode() {
       })}
 
       {/* ---------- notes tray ---------- */}
-      <div className="fixed inset-x-3 bottom-3 z-[80] sm:inset-x-auto sm:right-5 sm:bottom-5 sm:w-[380px]">
+      <div
+        data-review-ui
+        className="fixed inset-x-3 bottom-3 z-[80] sm:inset-x-auto sm:right-5 sm:bottom-5 sm:w-[380px]"
+      >
         {!trayOpen ? (
           <button
             type="button"
@@ -332,9 +451,9 @@ export default function ReviewMode() {
                 </div>
               ) : (
                 <p className="text-[14px] leading-relaxed text-ink-muted">
-                  Go through each page and tap{" "}
-                  <strong className="text-coral-deep">Suggest a change</strong> on any
-                  section. Tip: highlight words first to quote them in your note.
+                  <strong className="text-ink">Click any text on the page</strong> to leave a
+                  note or suggest new wording. Text you’ve commented on is outlined in{" "}
+                  <span className="font-semibold text-teal-deep">teal</span>.
                 </p>
               )}
 
@@ -373,9 +492,6 @@ export default function ReviewMode() {
                 <QuickButton onClick={() => startNote("Top menu / header")}>
                   Note on the menu
                 </QuickButton>
-                <QuickButton onClick={() => startNote("Footer")}>
-                  Note on the footer
-                </QuickButton>
                 <QuickButton onClick={() => startNote("General (whole page)")}>
                   General note
                 </QuickButton>
@@ -393,12 +509,20 @@ export default function ReviewMode() {
                         <p className="text-[12px] font-semibold text-coral-deep">
                           {n.page} · {n.section}
                         </p>
-                        {n.quote && (
+                        {n.original && (
                           <p className="mt-1 border-l-2 border-gold pl-2 text-[13px] italic text-ink-muted">
-                            “{n.quote}”
+                            “{clean(n.original, 120)}”
                           </p>
                         )}
-                        <p className="mt-1 whitespace-pre-wrap text-[14px]">{n.text}</p>
+                        {n.rewrite && (
+                          <p className="mt-1 text-[13px]">
+                            <span className="font-semibold text-teal-deep">Change to: </span>
+                            {clean(n.rewrite, 160)}
+                          </p>
+                        )}
+                        {n.text && (
+                          <p className="mt-1 whitespace-pre-wrap text-[14px]">{n.text}</p>
+                        )}
                         <div className="mt-2 flex gap-3 text-[13px] font-semibold">
                           <button
                             type="button"
@@ -410,7 +534,7 @@ export default function ReviewMode() {
                           <button
                             type="button"
                             className="min-h-8 text-ink-muted hover:underline"
-                            onClick={() => setNotes((prev) => prev.filter((x) => x.id !== n.id))}
+                            onClick={() => removeNote(n.id)}
                           >
                             Remove
                           </button>
@@ -483,9 +607,10 @@ export default function ReviewMode() {
         )}
       </div>
 
-      {/* ---------- note editor ---------- */}
+      {/* ---------- note window ---------- */}
       {draft && (
         <div
+          data-review-ui
           className="fixed inset-0 z-[110] flex items-end justify-center bg-ink/50 p-3 sm:items-center"
           onClick={(e) => e.target === e.currentTarget && setDraft(null)}
         >
@@ -493,56 +618,88 @@ export default function ReviewMode() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="review-draft-title"
-            className="w-full max-w-[520px] rounded-2xl bg-shell p-5 font-sans text-ink shadow-2xl"
+            className="flex max-h-[92vh] w-full max-w-[560px] flex-col overflow-y-auto rounded-2xl bg-shell p-5 font-sans text-ink shadow-2xl"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) saveDraft();
+              if (e.key === "Escape") setDraft(null);
+            }}
           >
-            <p className="text-[13px] font-semibold text-coral-deep">{draft.page}</p>
-            <h2 id="review-draft-title" className="mt-0.5 font-display text-[20px] font-semibold leading-tight">
-              {draft.section}
+            <p className="text-[13px] font-semibold text-coral-deep">
+              {draft.page} · {draft.section}
+            </p>
+            <h2 id="review-draft-title" className="mt-1 font-display text-[21px] font-semibold leading-tight">
+              {draft.original ? "Note on this text" : `Note on ${draft.section}`}
             </h2>
-            {draft.quote && (
-              <div className="mt-3 flex items-start gap-2 border-l-2 border-gold pl-3">
-                <p className="flex-1 text-[14px] italic text-ink-muted">“{draft.quote}”</p>
-                <button
-                  type="button"
-                  onClick={() => setDraft({ ...draft, quote: undefined })}
-                  className="text-[12px] text-ink-muted underline"
-                >
-                  remove quote
-                </button>
-              </div>
+
+            {draft.original && (
+              <blockquote className="mt-3 max-h-36 overflow-y-auto rounded-xl border-l-4 border-gold bg-cream-deep px-4 py-3 text-[15px] leading-relaxed text-ink">
+                {draft.original}
+              </blockquote>
             )}
+
             <label htmlFor="review-text" className="mt-4 block text-[15px] font-semibold">
-              What would you like changed?
+              Your note or comment
             </label>
             <textarea
               id="review-text"
               autoFocus
               value={draft.text}
               onChange={(e) => setDraft({ ...draft, text: e.target.value })}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) saveDraft();
-                if (e.key === "Escape") setDraft(null);
-              }}
-              rows={5}
-              placeholder="e.g. Change the wording to…, swap this photo for one of the playground, this looks great — keep it"
+              rows={3}
+              placeholder={
+                draft.original
+                  ? "e.g. This isn’t accurate anymore, we now… / Love this, keep it"
+                  : "What would you like changed in this part of the page?"
+              }
               className="mt-2 w-full rounded-xl border border-sand bg-cream p-3 text-[16px] leading-relaxed"
             />
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setDraft(null)}
-                className="min-h-11 rounded-full px-5 text-[15px] font-semibold text-ink-muted hover:bg-cream-deep"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={saveDraft}
-                disabled={!draft.text.trim()}
-                className="min-h-11 rounded-full bg-coral-deep px-6 text-[15px] font-semibold text-white disabled:opacity-45"
-              >
-                Save note
-              </button>
+
+            {draft.original && (
+              <>
+                <label htmlFor="review-rewrite" className="mt-4 block text-[15px] font-semibold">
+                  Want different wording?{" "}
+                  <span className="font-normal text-ink-muted">Edit it here (optional)</span>
+                </label>
+                <textarea
+                  id="review-rewrite"
+                  value={draft.rewrite ?? draft.original}
+                  onChange={(e) => setDraft({ ...draft, rewrite: e.target.value })}
+                  rows={Math.min(6, Math.max(2, Math.ceil(draft.original.length / 60)))}
+                  className="mt-2 w-full rounded-xl border border-sand bg-cream p-3 text-[16px] leading-relaxed"
+                />
+              </>
+            )}
+
+            <div className="mt-4 flex items-center gap-2">
+              {draft.id && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    removeNote(draft.id!);
+                    setDraft(null);
+                  }}
+                  className="min-h-11 rounded-full px-3 text-[14px] font-semibold text-ink-muted hover:text-coral-deep"
+                >
+                  Delete note
+                </button>
+              )}
+              <div className="ml-auto flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setDraft(null)}
+                  className="min-h-11 rounded-full px-5 text-[15px] font-semibold text-ink-muted hover:bg-cream-deep"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={saveDraft}
+                  disabled={!canSave}
+                  className="min-h-11 rounded-full bg-coral-deep px-6 text-[15px] font-semibold text-white disabled:opacity-45"
+                >
+                  Save note
+                </button>
+              </div>
             </div>
           </div>
         </div>
