@@ -4,6 +4,7 @@ import "./globals.css";
 import { site } from "@/lib/site";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import ReviewMode from "@/components/ReviewMode";
 
 /* Rockford Sans (brand sheet) has no web licence, so the type system stands in
    with the closest free relatives: Fredoka carries the logo's rounded geometric
@@ -79,6 +80,7 @@ export default function RootLayout({
         <SiteHeader />
         <main>{children}</main>
         <SiteFooter />
+        <ReviewMode />
       </body>
     </html>
   );
