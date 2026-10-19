@@ -129,27 +129,6 @@
   }
 }
 
-/* Client review mode (components/ReviewMode.tsx): every block of text on the
-   page becomes clickable. Translucent fills so it reads on cream and on the
-   dark slate bands alike. */
-html.review-on [data-review-text] {
-  cursor: pointer;
-  border-radius: 6px;
-  /* Background only: animating outline-color flashes a dashed box around every
-     block as it's first marked (it fades from currentColor to transparent). */
-  transition: background-color 0.15s;
-  outline: 2px dashed transparent;
-  outline-offset: 3px;
-}
-html.review-on [data-review-text]:hover {
-  background-color: rgb(235 183 95 / 0.28);
-  outline-color: var(--color-coral-deep);
-}
-html.review-on [data-review-text][data-review-noted] {
-  background-color: rgb(123 171 171 / 0.22);
-  outline: 2px solid var(--color-teal-deep);
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
