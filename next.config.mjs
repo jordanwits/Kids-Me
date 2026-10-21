@@ -1,6 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /**
+   * Serve images straight from /public instead of through Vercel's image
+   * optimizer. The Hobby plan's optimization quota ran out and every
+   * /_next/image request started returning 402, so images vanished for anyone
+   * without a cached copy. The source files are already web-sized (all under
+   * ~210 KB), so there's little to gain from resizing them on the fly.
+   */
+  images: { unoptimized: true },
+  /**
    * The current WordPress site's URLs, pointed at wherever their content now
    * lives. Two of the eight pages were merged rather than rebuilt:
    *   /why-choose-us  -> a section on /about
