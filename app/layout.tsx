@@ -32,11 +32,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://reddingpreschools.com"),
   title: "Kids & Me Preschool | Preschool & Daycare in Redding, CA",
   description:
-    "Licensed preschool and daycare in Redding, California since 1978. Ages 2–6, full and half day, nutritious meals, a shady playground and a two-story indoor playhouse. Tour any weekday, no appointment needed.",
+    "Licensed preschool and daycare in Redding, California since 1978. Ages 2–5, full and half day, nutritious meals, a shady playground and a two-story indoor playhouse. Tour any weekday, no appointment needed.",
   openGraph: {
     title: "Kids & Me Preschool | Redding, CA",
     description:
-      "Come see the happiest kids in Redding. Licensed preschool & daycare for ages 2–6, serving Redding families since 1978.",
+      "Come see the happiest kids in Redding. Licensed preschool & daycare for ages 2–5, serving Redding families since 1978.",
     type: "website",
     locale: "en_US",
   },

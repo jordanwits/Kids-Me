@@ -11,7 +11,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Programs & Curriculum | Kids & Me Preschool, Redding CA",
   description:
-    "Three age-grouped classrooms for ages 2 to 6, the full curriculum for each room, twelve months of themes, and how a day at Kids & Me is actually shaped.",
+    "Three age-grouped classrooms for ages 2 to 5, the full curriculum for each room, twelve months of themes, and how a day at Kids & Me is actually shaped.",
 };
 
 const accent: Record<
@@ -51,7 +51,7 @@ export default function ProgramsPage() {
         eyebrow="Programs"
         title="Three rooms, grouped by age, so every day fits"
         crayon="the child."
-        blurb="Kids & Me offers preschool and toddler programs for children two to six years of age. Separating by age lets us pitch material at exactly the right level, which is how children stay inquisitive, creative and proud of what they can do."
+        blurb="Kids & Me offers preschool and toddler programs for children two to five years of age. Separating by age lets us pitch material at exactly the right level, which is how children stay inquisitive, creative and proud of what they can do."
         edge="#F7EDE2"
       >
         <div className="flex flex-wrap gap-2.5">
@@ -205,7 +205,7 @@ export default function ProgramsPage() {
               Monthly themes
             </p>
             <h2 className="mt-3 font-display text-[clamp(2rem,4.2vw,3rem)] font-semibold leading-[1.05] tracking-[-0.015em] text-ink text-balance">
-              Twelve months, thirty-six subjects, and a reason to look forward
+              Twelve months, thirty-five subjects, and a reason to look forward
               to Monday.
             </h2>
             <p className="mx-auto mt-5 max-w-[56ch] text-[16.5px] leading-[1.7] text-ink-muted text-pretty">

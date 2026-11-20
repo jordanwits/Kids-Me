@@ -139,7 +139,7 @@ export default function ContactPage() {
                     Enroll or book a tour
                   </h3>
                   <p className="mt-3 max-w-[38ch] text-[15.5px] leading-[1.6] text-ink/80">
-                    Registration is $100 per family, one time, and covers every
+                    Registration is $150 per family, one time, and covers every
                     child you enroll.
                   </p>
                   <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">

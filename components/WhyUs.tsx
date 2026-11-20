@@ -19,7 +19,7 @@ const features = [
   {
     icon: featureIcons.apple,
     title: "Meals included",
-    body: "Nutritious hot lunches and snacks every day. No packing a cooler at 6 a.m.",
+    body: "Breakfast, a nutritious hot lunch and snacks every day. No packing a cooler at 6 a.m.",
     ring: "bg-gold-soft text-coral-deep",
   },
   {

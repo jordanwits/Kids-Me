@@ -133,7 +133,7 @@ export default function SiteFooter() {
                 Enroll or book a tour
               </h3>
               <p className="mt-2.5 text-[14.5px] leading-[1.6] text-cream/65">
-                Registration is $100 per family, one time, and covers every
+                Registration is $150 per family, one time, and covers every
                 child you enroll.
               </p>
               <Link
@@ -153,7 +153,7 @@ export default function SiteFooter() {
             <p className="mt-5 text-[13px] leading-relaxed text-cream/50">
               State License #{site.license}
               <br />
-              Licensed capacity 72 · Ages 2–6
+              Licensed capacity 72 · Ages 2–5
             </p>
           </div>
         </div>

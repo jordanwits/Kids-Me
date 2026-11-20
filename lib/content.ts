@@ -19,8 +19,8 @@ export type CurriculumGroup = { heading: string; items: string[] };
 export const classrooms = [
   {
     slug: "toddler",
-    age: "Ages 2 & 3",
-    name: "Toddler Room",
+    age: "Ages 2–3",
+    name: "Tiny Tots",
     photo: "/images/gallery-classroom-redding-preschools-02.jpg",
     alt: "Toddlers at work in the Kids & Me toddler classroom",
     blurb:
@@ -83,8 +83,8 @@ export const classrooms = [
   },
   {
     slug: "pre-k-one",
-    age: "Age 4",
-    name: "Pre-K One",
+    age: "Ages 3–4",
+    name: "Rising Stars",
     photo: "/images/gallery-classroom-redding-preschools-03.jpg",
     alt: "A Pre-K classroom at Kids & Me Preschool",
     blurb:
@@ -146,8 +146,8 @@ export const classrooms = [
   },
   {
     slug: "pre-k-two",
-    age: "Age 5",
-    name: "Pre-K Two",
+    age: "Ages 4–5",
+    name: "Little Graduates",
     photo: "/images/gallery-classroom-redding-preschools-05.jpg",
     alt: "Older preschoolers at Kids & Me Preschool",
     blurb:
@@ -209,8 +209,8 @@ export const classrooms = [
 
 /* ============================================================
    Monthly themes — the wall calendar
-   Source: /monthly-themes on the current site, verbatim.
-   Twelve months, three subjects each, grouped into four seasons.
+   Source: the school's own list, sent through review mode (Nov 2026).
+   Twelve months, two to four subjects each, grouped into four seasons.
    ============================================================ */
 
 export const monthlyThemes = [
@@ -218,53 +218,36 @@ export const monthlyThemes = [
     season: "Fall",
     accent: "gold",
     months: [
-      { name: "September", themes: ["Back to school", "Family", "All about me"] },
-      {
-        name: "October",
-        themes: ["Community helpers", "Halloween", "Fire prevention"],
-      },
-      {
-        name: "November",
-        // TODO(client): "Native Americans" is the current site's wording. Worth
-        // asking whether the school wants to keep it or update the phrasing.
-        themes: ["Fall & Thanksgiving", "Pilgrims", "Native Americans"],
-      },
+      { name: "September", themes: ["All about me", "Johnny Appleseed", "Fall", "Circus"] },
+      { name: "October", themes: ["Halloween", "Pumpkins", "Bats, spiders and skeletons"] },
+      { name: "November", themes: ["Fall", "Pilgrims", "Thanksgiving"] },
     ],
   },
   {
     season: "Winter",
     accent: "mauve",
     months: [
-      { name: "December", themes: ["Winter", "Christmas", "New Year's Eve"] },
-      { name: "January", themes: ["Winter", "New Year", "Chinese New Year"] },
-      { name: "February", themes: ["Friends", "Valentine's Day", "Presidents"] },
+      { name: "December", themes: ["Christmas", "New Year's"] },
+      { name: "January", themes: ["Winter weather", "Polar animals", "Nursery rhymes"] },
+      { name: "February", themes: ["Valentine's Day", "The five senses", "The solar system and planets"] },
     ],
   },
   {
     season: "Spring",
     accent: "teal",
     months: [
-      {
-        name: "March",
-        themes: ["Transportation", "St. Patrick's Day", "Spring"],
-      },
-      {
-        name: "April",
-        themes: ["Easter", "Plants and seeds", "Insects and spiders"],
-      },
-      {
-        name: "May",
-        themes: ["Mother's Day", "Rodeo", "Pets and farm animals"],
-      },
+      { name: "March", themes: ["Community helpers", "St. Patrick's Day"] },
+      { name: "April", themes: ["Easter", "Plants and seeds", "Insects", "Week of the Young Child"] },
+      { name: "May", themes: ["Mother's Day", "Rodeo", "Pets and farm animals"] },
     ],
   },
   {
     season: "Summer",
     accent: "coral",
     months: [
-      { name: "June", themes: ["Summer fun", "Father's Day", "County fair"] },
-      { name: "July", themes: ["4th of July", "Forest animals", "Zoo animals"] },
-      { name: "August", themes: ["Ocean animals", "Fairy tales", "Camping"] },
+      { name: "June", themes: ["Volcanoes and dinosaurs", "Father's Day", "Summer fun"] },
+      { name: "July", themes: ["4th of July", "Camping and BBQ", "Ocean animals"] },
+      { name: "August", themes: ["Forest and zoo animals", "Back to school"] },
     ],
   },
 ] as const;
@@ -346,7 +329,7 @@ export const activities = [
   "Block building",
   "Manipulative toys",
   "Visitors from the community",
-  "Nutritional snacks and lunch",
+  "Nutritional breakfast, lunch and snacks",
   "Nap time",
 ] as const;
 
@@ -384,7 +367,7 @@ export const goodToKnow = [
   },
   {
     q: "What about meals?",
-    a: "Nutritious hot lunches and snacks are included. There is no cooler to pack.",
+    a: "Breakfast, a nutritious hot lunch and snacks are all included. There is no cooler to pack.",
   },
 ] as const;
 
@@ -416,21 +399,21 @@ export const staff: StaffMember[] = [
   {
     name: null,
     role: "Lead Teacher",
-    room: "Toddler Room · Ages 2 & 3",
+    room: "Tiny Tots · Ages 2–3",
     bio: null,
     accent: "teal",
   },
   {
     name: "Teacher Pam",
     role: "Lead Teacher",
-    room: "Pre-K One · Age 4",
+    room: "Rising Stars · Ages 3–4",
     bio: "Named by more than one parent in our reviews. Her Pre-K classroom is where the alphabet, pencil grip and circle-time listening all come together.",
     accent: "gold",
   },
   {
     name: null,
     role: "Lead Teacher",
-    room: "Pre-K Two · Age 5",
+    room: "Little Graduates · Ages 4–5",
     bio: null,
     accent: "mauve",
   },
@@ -558,9 +541,9 @@ export const galleryPhotos: GalleryPhoto[] = galleryCategories.flatMap((c) =>
    ============================================================ */
 
 export const offerings = [
-  "Full day and half day, ages 2–6",
+  "Full day and half day, ages 2–5",
   "Reasonable rates and flexible scheduling, year round",
-  "Nutritious lunches and snacks",
+  "Nutritious breakfast, lunch and snacks",
   "Qualified and experienced teachers",
   "A safe, happy and challenging environment",
   "A clean facility, designed for the young child",

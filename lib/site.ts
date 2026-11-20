@@ -83,7 +83,7 @@ export const nav: NavItem[] = [
       {
         label: "Monthly Themes",
         href: "/programs#themes",
-        blurb: "Twelve months, thirty-six subjects",
+        blurb: "Twelve months, thirty-five subjects",
       },
       {
         label: "A Day at Kids & Me",
@@ -113,12 +113,12 @@ export const nav: NavItem[] = [
 ];
 
 /**
- * TODO(client): the two daily rates below are PLACEHOLDERS.
+ * TODO(client): the Full Day rate below is still a PLACEHOLDER.
  *
  * The current site carries an "Our Prices & Rates" heading on its About Us page
- * with nothing underneath it — no daily rate has ever actually been published.
- * Only the $100 per-family registration fee is real. Brett has to supply the
- * full day and half day figures before this page can go live. Any rate marked
+ * with nothing underneath it. The school has since confirmed Half Day at $40
+ * a day and registration at $150; the Full Day figure is still needed before
+ * this page can go live. Any rate marked
  * `placeholder` renders with a visible "pending" flag in development.
  */
 export const rates = [
@@ -130,9 +130,7 @@ export const rates = [
     hours: "Up to 10.5 hours · 7:00 a.m. – 5:30 p.m.",
     accent: "teal",
     features: [
-      // No breakfast: the current site publishes "Nutritious lunches and
-      // snacks" and mentions a morning meal nowhere.
-      "Hot lunch & afternoon snack",
+      "Breakfast, lunch & snacks",
       "Full preschool curriculum",
       "Outdoor play & nap time",
       "Any days of the week you need",
@@ -141,9 +139,9 @@ export const rates = [
   },
   {
     name: "Half Day",
-    price: "$38",
+    price: "$40",
     unit: "/ day",
-    placeholder: true,
+    placeholder: false,
     hours: "Up to 5 hours · morning or afternoon",
     accent: "gold",
     features: [
@@ -166,13 +164,14 @@ export const rates = [
  */
 /*
  * Everything below is supported by the one line the current site publishes:
- * "Registration fee: $100 per family, one-time fee." Per-family gives us
+ * "Registration fee: $100 per family, one-time fee" (now $150, per the
+ * school's review notes, Nov 2026). Per-family gives us
  * "covers every child you enroll", one-time gives us "never charged twice".
  * Do NOT add what the fee covers (supplies, materials, holding a place) —
  * none of that is documented anywhere, and it is the school's money.
  */
 export const registration = {
-  price: "$100",
+  price: "$150",
   unit: "one time",
   summary: "Per family, not per child",
   detail:

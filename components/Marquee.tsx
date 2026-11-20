@@ -2,12 +2,12 @@ import Image from "next/image";
 
 const items = [
   "Play-based learning",
-  "Hot lunches & snacks included",
+  "Breakfast, lunch and snacks included",
   "Shady, park-like playground",
   "Two-story indoor playhouse",
   "Flexible scheduling, year round",
-  "Teachers who stay for years",
-  "Ages 2 through 6",
+  "Dedicated teachers",
+  "Ages 2 through 5",
 ];
 
 export default function Marquee() {

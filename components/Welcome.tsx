@@ -4,8 +4,8 @@ import Reveal from "./Reveal";
 import { ConfettiDots, PaperEdge } from "./Decor";
 
 const offerings = [
-  "Full day and half day, ages 2–6",
-  "Nutritious lunches and snacks",
+  "Full day and half day, ages 2–5",
+  "Nutritious breakfast, lunch and snacks",
   "Qualified, experienced teachers",
   "Clean facility built for small children",
   "Spacious, shaded outdoor play area",
@@ -133,7 +133,7 @@ export default function Welcome() {
               {/* The old "licensed capacity of 72" line was removed: no source
                   on the current site or in the scope of work supports it. */}
               <p className="text-[14px] text-ink-muted">
-                Three age-grouped rooms · ages 2 to 6
+                Three age-grouped rooms · ages 2 to 5
               </p>
             </div>
           </Reveal>

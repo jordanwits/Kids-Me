@@ -10,7 +10,7 @@ import { activities, goodToKnow, offerings } from "@/lib/content";
 export const metadata: Metadata = {
   title: "About Us | Kids & Me Preschool, Redding CA",
   description:
-    "A licensed preschool and daycare serving Redding, California since 1978. Ages 2 to 6, three age-grouped classrooms, nutritious meals included, and an open door during all operating hours.",
+    "A licensed preschool and daycare serving Redding, California since 1978. Ages 2 to 5, three age-grouped classrooms, nutritious meals included, and an open door during all operating hours.",
 };
 
 /* The six reasons, shared with the home page's Why Us tiles. Here they are
@@ -31,7 +31,7 @@ const whyFeatures = [
   {
     icon: featureIcons.apple,
     title: "Meals included",
-    body: "Nutritious hot lunches and snacks every day. No packing a cooler at 6 a.m.",
+    body: "Breakfast, a nutritious hot lunch and snacks every day. No packing a cooler at 6 a.m.",
     tint: "text-gold",
   },
   {
@@ -116,7 +116,7 @@ export default function AboutPage() {
                 Our story
               </p>
               <h2 className="mt-3 font-display text-[clamp(1.9rem,3.8vw,2.7rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-ink text-balance">
-                Preschool and toddler programs for ages two to six.
+                Preschool and toddler programs for ages two to five.
               </h2>
               <p className="mt-6 max-w-[52ch] text-[17px] leading-[1.75] text-ink-muted text-pretty">
                 Kids &amp; Me Preschool is a place where the social, emotional

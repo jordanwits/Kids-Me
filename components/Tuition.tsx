@@ -25,7 +25,7 @@ export default function Tuition() {
               Tuition &amp; Rates
             </p>
             <h2 className="mt-3 font-display text-[clamp(2.1rem,4.4vw,3.2rem)] font-semibold leading-[1.05] tracking-[-0.015em] text-cream text-balance">
-              Our rates, published plainly.
+              Little Learners, Loving Rates
             </h2>
             <p className="mx-auto mt-5 max-w-[52ch] text-[16.5px] leading-[1.7] text-cream/75 text-pretty">
               No packages to decode and no per-day penalty. Every daily rate is

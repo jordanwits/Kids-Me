@@ -9,7 +9,7 @@ import { rates, registration, site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Tuition & Enrollment | Kids & Me Preschool, Redding CA",
   description:
-    "Published daily rates, a $100 one-time registration fee per family, and the registration form itself. Enroll online or drop in for a tour any weekday, no appointment needed.",
+    "Published daily rates, a $150 one-time registration fee per family, and the registration form itself. Enroll online or drop in for a tour any weekday, no appointment needed.",
 };
 
 const accents: Record<string, { chip: string; price: string; check: string }> = {
@@ -40,8 +40,8 @@ export default function EnrollmentPage() {
     <>
       <PageHero
         eyebrow="Tuition & Enrollment"
-        title="Our rates, published"
-        crayon="plainly."
+        title="Little Learners,"
+        crayon="Loving Rates"
         blurb="No packages to decode and no per-day penalty. Every daily rate is the same, however many days a week your child attends, and registration is charged once per family rather than per child."
         edge="#4A5567"
       />
@@ -209,8 +209,8 @@ export default function EnrollmentPage() {
               Register
             </p>
             <h2 className="mt-3 font-display text-[clamp(2rem,4.4vw,3.1rem)] font-semibold leading-[1.04] tracking-[-0.015em] text-ink text-balance">
-              Two ways in. Both start{" "}
-              <span className="crayon crayon-coral">right here.</span>
+              Your Children&rsquo;s Next Adventure{" "}
+              <span className="crayon crayon-coral">Starts Here</span>
             </h2>
             <p className="mx-auto mt-5 max-w-[52ch] text-[16.5px] leading-[1.7] text-ink-muted text-pretty">
               Register online below, or simply walk in during operating hours.
@@ -355,7 +355,7 @@ export default function EnrollmentPage() {
               One fee, one family
             </p>
             <h2 className="mt-3 font-display text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold leading-tight text-ink text-balance">
-              Registration is $100 per family, charged once.
+              Registration is $150 per family, charged once.
             </h2>
             <p className="mx-auto mt-4 max-w-[50ch] text-[16.5px] leading-[1.7] text-ink-muted text-pretty">
               Not per child, and never charged twice — one fee covers every

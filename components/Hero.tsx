@@ -90,7 +90,7 @@ export default function Hero() {
               // "Since 1978" rather than a year count: the current site still
               // says "over 33 years", which is what a hardcoded number becomes.
               { k: "Since 1978", v: "caring for Redding kids" },
-              { k: "Ages 2–6", v: "three age-grouped classrooms" },
+              { k: "Ages 2–5", v: "three age-grouped classrooms" },
               { k: "7:00–5:30", v: "Monday through Friday" },
             ].map((s) => (
               <div key={s.k}>
